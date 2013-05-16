@@ -5,8 +5,11 @@ bin
 .gradle
 .project
 .classpath
+.settings
 *.iml
 *.iws
 *.ipr
 *.class
 build
+*~
+highScores.txt

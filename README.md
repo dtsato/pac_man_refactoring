@@ -21,5 +21,4 @@ Esse código foi adaptado com base no jogo originalmente escrito por [Drew Schus
 ## TODO
 
 * Consertar bug: pacman consegue entrar na casa do fantasma
-* Não explodir se não conseguir tocar sons
 * Double-buffer pra evitar redesenhar partes da tela

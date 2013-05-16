@@ -8,7 +8,7 @@ import java.io.IOException;
 
 
 /* This class controls all sound effects*/
-public class GameSounds {
+public class GameSounds implements Sounds {
 
     private final Clip nomNom;
     private final Clip newGame;

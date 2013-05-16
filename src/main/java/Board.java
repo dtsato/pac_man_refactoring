@@ -67,7 +67,7 @@ public class Board extends JPanel {
     int gameFrame;
 
     /* Used to call sound effects */
-    GameSounds sounds;
+    Sounds sounds;
 
     private int lastPelletEatenX = 0;
     private int lastPelletEatenY = 0;
@@ -76,9 +76,14 @@ public class Board extends JPanel {
     private Font font = new Font("Monospaced", Font.BOLD, 12);
 
     /* Constructor initializes state flags etc.*/
-    public Board() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public Board() {
         initHighScores();
-        sounds = new GameSounds();
+        try {
+        	sounds = new GameSounds();
+        }
+        catch (Exception e) {
+        	sounds = new NoSounds();
+        }
         currScore = 0;
         stopped = false;
         max = 400;

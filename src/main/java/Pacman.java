@@ -23,7 +23,7 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 
 
     /* This constructor creates the entire game essentially */
-    public Pacman() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public Pacman() {
         b = new Board();
         b.requestFocus();
 
