@@ -1,0 +1,7 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+jar {
+  manifest { attributes 'Main-Class': 'Pacman' }
+}
