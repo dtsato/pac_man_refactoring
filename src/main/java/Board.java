@@ -115,15 +115,7 @@ public class Board extends JPanel {
 
     /* Wipes the high scores file and sets flag to update it on screen */
     public void clearHighScores() {
-        PrintWriter out;
-        try {
-            out = new PrintWriter("highScores.txt");
-            out.println("0");
-            out.close();
-        } catch (Exception e) {
-        }
-        highScore = 0;
-        clearHighScores = true;
+        updateScore(0);
     }
 
     /* Reset occurs on a new game*/
