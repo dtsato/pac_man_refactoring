@@ -4,7 +4,7 @@ class Mover {
     int frameCount = 0;
 
     /* State contains the game map */
-    boolean[][] state;
+    private boolean[][] state;
 
     /* gridSize is the size of one square in the game.
 max is the height/width of the game.
@@ -24,18 +24,7 @@ increment is the speed at which the object moves,
         state = new boolean[20][20];
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                state[i][j] = map == null ? false : map.getState(i, j);
-            }
-        }
-    }
-
-
-
-    /* Updates the state information */
-    public void updateState(boolean[][] state) {
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                this.state[i][j] = state[i][j];
+                state[i][j] = map != null && map.getState(i, j);
             }
         }
     }

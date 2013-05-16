@@ -52,8 +52,6 @@ public class Board extends JPanel {
 
     private int numLives = 2;
 
-    /*Contains the game map, passed to player and ghosts */
-    private boolean[][] state;
     private GameMap map;
 
     /* Contains the state of all pellets*/
@@ -133,17 +131,60 @@ public class Board extends JPanel {
     /* Reset occurs on a new game*/
     public void reset() {
         numLives = 2;
-        state = new boolean[20][20];
         pellets = new boolean[20][20];
 
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                pellets[i][j] = true;
+            }
+        }
+        boolean[][] state = new boolean[20][20];
         /* Clear state and pellets arrays */
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 state[i][j] = true;
-                pellets[i][j] = true;
             }
         }
-        createWalls();
+        fillWall(40, 40, 60, 20, state);
+        fillWall(120, 40, 60, 20, state);
+        fillWall(200, 20, 20, 40, state);
+        fillWall(240, 40, 60, 20, state);
+        fillWall(320, 40, 60, 20, state);
+        fillWall(40, 80, 60, 20, state);
+        fillWall(160, 80, 100, 20, state);
+        fillWall(200, 80, 20, 60, state);
+        fillWall(320, 80, 60, 20, state);
+        fillWall(20, 120, 80, 60, state);
+        fillWall(320, 120, 80, 60, state);
+        fillWall(20, 200, 80, 60, state);
+        fillWall(320, 200, 80, 60, state);
+        fillWall(160, 160, 40, 20, state);
+        fillWall(220, 160, 40, 20, state);
+        fillWall(160, 180, 20, 20, state);
+        fillWall(160, 200, 100, 20, state);
+        fillWall(240, 180, 20, 20, state);
+        fillWall(120, 120, 60, 20, state);
+        fillWall(120, 80, 20, 100, state);
+        fillWall(280, 80, 20, 100, state);
+        fillWall(240, 120, 60, 20, state);
+        fillWall(280, 200, 20, 60, state);
+        fillWall(120, 200, 20, 60, state);
+        fillWall(160, 240, 100, 20, state);
+        fillWall(200, 260, 20, 40, state);
+        fillWall(120, 280, 60, 20, state);
+        fillWall(240, 280, 60, 20, state);
+        fillWall(40, 280, 60, 20, state);
+        fillWall(80, 280, 20, 60, state);
+        fillWall(320, 280, 60, 20, state);
+        fillWall(320, 280, 20, 60, state);
+        fillWall(20, 320, 40, 20, state);
+        fillWall(360, 320, 40, 20, state);
+        fillWall(160, 320, 100, 20, state);
+        fillWall(200, 320, 20, 60, state);
+        fillWall(40, 360, 140, 20, state);
+        fillWall(240, 360, 140, 20, state);
+        fillWall(280, 320, 20, 40, state);
+        fillWall(120, 320, 20, 60, state);
         map = new GameMap(state);
 
         /* Handle the weird spots with no pellets*/
@@ -165,7 +206,7 @@ public class Board extends JPanel {
        the map and pellets arrays are updated accordingly to note
        that those are invalid locations to travel or put pellets
     */
-    private void fillWall(int x, int y, int width, int height) {
+    private void fillWall(int x, int y, int width, int height, boolean[][] state) {
         for (int i = x / gridSize; i < x / gridSize + width / gridSize; i++) {
             for (int j = y / gridSize; j < y / gridSize + height / gridSize; j++) {
                 state[i - 1][j - 1] = false;
@@ -262,49 +303,6 @@ and ghosts know that they can't traverse this area */
         g.fillRect(280, 320, 20, 40);
         g.fillRect(120, 320, 20, 60);
         drawLives(g);
-    }
-
-    private void createWalls() {
-        fillWall(40, 40, 60, 20);
-        fillWall(120, 40, 60, 20);
-        fillWall(200, 20, 20, 40);
-        fillWall(240, 40, 60, 20);
-        fillWall(320, 40, 60, 20);
-        fillWall(40, 80, 60, 20);
-        fillWall(160, 80, 100, 20);
-        fillWall(200, 80, 20, 60);
-        fillWall(320, 80, 60, 20);
-        fillWall(20, 120, 80, 60);
-        fillWall(320, 120, 80, 60);
-        fillWall(20, 200, 80, 60);
-        fillWall(320, 200, 80, 60);
-        fillWall(160, 160, 40, 20);
-        fillWall(220, 160, 40, 20);
-        fillWall(160, 180, 20, 20);
-        fillWall(160, 200, 100, 20);
-        fillWall(240, 180, 20, 20);
-        fillWall(120, 120, 60, 20);
-        fillWall(120, 80, 20, 100);
-        fillWall(280, 80, 20, 100);
-        fillWall(240, 120, 60, 20);
-        fillWall(280, 200, 20, 60);
-        fillWall(120, 200, 20, 60);
-        fillWall(160, 240, 100, 20);
-        fillWall(200, 260, 20, 40);
-        fillWall(120, 280, 60, 20);
-        fillWall(240, 280, 60, 20);
-        fillWall(40, 280, 60, 20);
-        fillWall(80, 280, 20, 60);
-        fillWall(320, 280, 60, 20);
-        fillWall(320, 280, 20, 60);
-        fillWall(20, 320, 40, 20);
-        fillWall(360, 320, 40, 20);
-        fillWall(160, 320, 100, 20);
-        fillWall(200, 320, 20, 60);
-        fillWall(40, 360, 140, 20);
-        fillWall(240, 360, 140, 20);
-        fillWall(280, 320, 20, 40);
-        fillWall(120, 320, 20, 60);
     }
 
 
