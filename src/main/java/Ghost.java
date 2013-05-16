@@ -4,18 +4,16 @@ import java.util.Set;
 /* Ghost class controls the ghost. */
 class Ghost extends Mover {
     /* Direction ghost is heading */
-    char direction;
+    private char direction;
 
     /* Last ghost location*/
-    int lastX;
-    int lastY;
+    int lastX, lastY;
 
     /* Current ghost location */
-    int x;
-    int y;
+    int x, y;
 
     /* The pellet the ghost is on top of */
-    int pelletX, pelletY;
+    private int pelletX, pelletY;
 
     /* The pellet the ghost was last on top of */
     int lastPelletX, lastPelletY;
@@ -53,7 +51,7 @@ class Ghost extends Mover {
     }
 
     /* Determines if the location is one where the ghost has to make a decision*/
-    public boolean isChoiceDest() {
+    private boolean isChoiceDest() {
         if (x % gridSize == 0 && y % gridSize == 0) {
             return true;
         }
@@ -61,7 +59,7 @@ class Ghost extends Mover {
     }
 
     /* Chooses a new direction randomly for the ghost to move */
-    public char newDirection() {
+    private char newDirection() {
         int random;
         char backwards = 'U';
         int lookX = x, lookY = y;

@@ -12,16 +12,13 @@ class Player extends Mover {
     int pelletsEaten;
 
     /* Last location */
-    int lastX;
-    int lastY;
+    int lastX, lastY;
 
     /* Current location */
-    int x;
-    int y;
+    int x, y;
 
     /* Which pellet the pacman is on top of */
-    int pelletX;
-    int pelletY;
+    int pelletX, pelletY;
 
     /* teleport is true when travelling through the teleport tunnels*/
     boolean teleport;
@@ -48,12 +45,10 @@ class Player extends Mover {
         this(x, y, null);
     }
 
-
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
     public char newDirection() {
         int random;
         char backwards = 'U';
-        int newX = x, newY = y;
         int lookX = x, lookY = y;
         Set<Character> set = new HashSet<Character>();
         switch (direction) {
@@ -76,30 +71,24 @@ class Player extends Mover {
                 newDirection = backwards;
                 break;
             }
-            newX = x;
-            newY = y;
             lookX = x;
             lookY = y;
             random = (int) (Math.random() * 4) + 1;
             if (random == 1) {
                 newDirection = 'L';
-                newX -= increment;
                 lookX -= increment;
             } else if (random == 2) {
                 newDirection = 'R';
-                newX += increment;
                 lookX += gridSize;
             } else if (random == 3) {
                 newDirection = 'U';
-                newY -= increment;
                 lookY -= increment;
             } else if (random == 4) {
                 newDirection = 'D';
-                newY += increment;
                 lookY += gridSize;
             }
             if (newDirection != backwards) {
-                set.add(new Character(newDirection));
+                set.add(newDirection);
             }
         }
         return newDirection;
@@ -125,7 +114,7 @@ class Player extends Mover {
                 if (isValidDest(x - increment, y)) {
                     x -= increment;
                 } else if (y == 9 * gridSize && x < 2 * gridSize) {
-                    x = max - gridSize * 1;
+                    x = max - gridSize;
                     teleport = true;
                 }
                 break;
@@ -133,7 +122,7 @@ class Player extends Mover {
                 if (isValidDest(x + gridSize, y)) {
                     x += increment;
                 } else if (y == 9 * gridSize && x > max - gridSize * 2) {
-                    x = 1 * gridSize;
+                    x = gridSize;
                     teleport = true;
                 }
                 break;
@@ -191,7 +180,7 @@ class Player extends Mover {
                     if (isValidDest(x - increment, y))
                         x -= increment;
                     else if (y == 9 * gridSize && x < 2 * gridSize) {
-                        x = max - gridSize * 1;
+                        x = max - gridSize;
                         teleport = true;
                     }
                     break;
@@ -199,7 +188,7 @@ class Player extends Mover {
                     if (isValidDest(x + gridSize, y))
                         x += increment;
                     else if (y == 9 * gridSize && x > max - gridSize * 2) {
-                        x = 1 * gridSize;
+                        x = gridSize;
                         teleport = true;
                     }
                     break;
