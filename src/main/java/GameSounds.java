@@ -5,17 +5,17 @@ import javax.sound.sampled.Clip;
 
 
 /* This class controls all sound effects*/
-public class GameSounds{
-    
+public class GameSounds {
+
     Clip nomNom;
     Clip newGame;
     Clip death;
     /* Keeps track of whether or not the eating sound is playing*/
     boolean stopped;
 
-/* Initialize audio files */ 
-    public GameSounds(){
-        stopped=true;
+    /* Initialize audio files */
+    public GameSounds() {
+        stopped = true;
         try {
             nomNom = AudioSystem.getClip();
             nomNom.open(AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResource("sounds/nomnom.wav")));
@@ -30,35 +30,35 @@ public class GameSounds{
         } catch (Exception e) {
         }
     }
-    
+
     /* Play pacman eating sound */
-    public void nomNom(){
+    public void nomNom() {
         /* If it's already playing, don't start it playing again!*/
         if (!stopped)
-          return;
+            return;
 
-        stopped=false;
+        stopped = false;
         nomNom.stop();
         nomNom.setFramePosition(0);
         nomNom.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     /* Stop pacman eating sound */
-    public void nomNomStop(){
-        stopped=true;
+    public void nomNomStop() {
+        stopped = true;
         nomNom.stop();
         nomNom.setFramePosition(0);
     }
-    
+
     /* Play new game sound */
-    public void newGame(){
+    public void newGame() {
         newGame.stop();
         newGame.setFramePosition(0);
         newGame.start();
     }
-    
+
     /* Play pacman death sound */
-    public void death(){
+    public void death() {
         death.stop();
         death.setFramePosition(0);
         death.start();
