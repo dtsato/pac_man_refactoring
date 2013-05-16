@@ -5,3 +5,7 @@ apply plugin: 'eclipse'
 jar {
   manifest { attributes 'Main-Class': 'Pacman' }
 }
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.4'
+}
