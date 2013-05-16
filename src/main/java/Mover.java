@@ -1,10 +1,4 @@
-/**
- * Created with IntelliJ IDEA.
- * User: dtsato
- * Date: 15/05/2013
- * Time: 21:17
- * To change this template use File | Settings | File Templates.
- */ /* Both Player and Ghost inherit Mover.  Has generic functions relevant to both*/
+/* Both Player and Ghost inherit Mover.  Has generic functions relevant to both*/
 class Mover {
     /* Framecount is used to count animation frames*/
     int frameCount = 0;
@@ -19,19 +13,23 @@ increment is the speed at which the object moves,
     int gridSize;
     int max;
     int increment;
+    private final GameMap map;
 
     /* Generic constructor */
-    public Mover() {
+    public Mover(GameMap map) {
+        this.map = map;
         gridSize = 20;
         increment = 4;
         max = 400;
         state = new boolean[20][20];
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                state[i][j] = false;
+                state[i][j] = map == null ? false : map.getState(i, j);
             }
         }
     }
+
+
 
     /* Updates the state information */
     public void updateState(boolean[][] state) {

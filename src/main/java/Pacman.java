@@ -42,8 +42,8 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
         f.setVisible(true);
         f.setResizable(false);
 
-        /* Set the New flag to 1 because this is a new game */
-        b.New = 1;
+        /* Set the gameFrame flag to 1 because this is a new game */
+        b.gameFrame = 1;
 
         /* Manually call the first frameStep to initialize the game. */
         stepFrame(true);
@@ -92,9 +92,9 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
             return;
         }
 
-        /* New can either be specified by the New parameter in stepFrame function call or by the state
-  of b.New.  Update New accordingly */
-        New = New || (b.New != 0);
+        /* gameFrame can either be specified by the gameFrame parameter in stepFrame function call or by the state
+  of b.gameFrame.  Update gameFrame accordingly */
+        New = New || (b.gameFrame != 0);
 
         /* If this is the title screen, make sure to only stay on the title screen for 5 seconds.
 If after 5 seconds the user hasn't started a game, start up demo mode */
@@ -212,7 +212,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
             b.demo = false;
             /* Stop any pacman eating sounds */
             b.sounds.nomNomStop();
-            b.New = 1;
+            b.gameFrame = 1;
             return;
         }
 
@@ -248,7 +248,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
         if (400 <= y && y <= 460) {
             if (100 <= x && x <= 150) {
                 /* New game has been clicked */
-                b.New = 1;
+                b.gameFrame = 1;
             } else if (180 <= x && x <= 300) {
                 /* Clear high scores has been clicked */
                 b.clearHighScores();

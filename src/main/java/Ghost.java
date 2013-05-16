@@ -1,13 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created with IntelliJ IDEA.
- * User: dtsato
- * Date: 15/05/2013
- * Time: 21:17
- * To change this template use File | Settings | File Templates.
- */ /* Ghost class controls the ghost. */
+/* Ghost class controls the ghost. */
 class Ghost extends Mover {
     /* Direction ghost is heading */
     char direction;
@@ -27,7 +21,8 @@ class Ghost extends Mover {
     int lastPelletX, lastPelletY;
 
     /*Constructor places ghost and updates states*/
-    public Ghost(int x, int y) {
+    public Ghost(int x, int y, GameMap map) {
+        super(map);
         direction = 'L';
         pelletX = x / gridSize - 1;
         pelletY = x / gridSize - 1;
@@ -37,6 +32,10 @@ class Ghost extends Mover {
         this.lastY = y;
         this.x = x;
         this.y = y;
+    }
+
+    public Ghost(int x, int y) {
+        this(x, y, null);
     }
 
     /* update pellet status */
@@ -65,7 +64,6 @@ class Ghost extends Mover {
     public char newDirection() {
         int random;
         char backwards = 'U';
-        int newX = x, newY = y;
         int lookX = x, lookY = y;
         Set<Character> set = new HashSet<Character>();
         switch (direction) {
@@ -92,8 +90,6 @@ class Ghost extends Mover {
                 break;
             }
 
-            newX = x;
-            newY = y;
             lookX = x;
             lookY = y;
 
@@ -101,19 +97,15 @@ class Ghost extends Mover {
             random = (int) (Math.random() * 4) + 1;
             if (random == 1) {
                 newDirection = 'L';
-                newX -= increment;
                 lookX -= increment;
             } else if (random == 2) {
                 newDirection = 'R';
-                newX += increment;
                 lookX += gridSize;
             } else if (random == 3) {
                 newDirection = 'U';
-                newY -= increment;
                 lookY -= increment;
             } else if (random == 4) {
                 newDirection = 'D';
-                newY += increment;
                 lookY += gridSize;
             }
             if (newDirection != backwards) {

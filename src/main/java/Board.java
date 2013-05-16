@@ -13,22 +13,22 @@ import java.util.Scanner;
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
     /* Initialize the images*/
-    Image pacmanImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
-    Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanup.jpg"));
-    Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmandown.jpg"));
-    Image pacmanLeftImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanleft.jpg"));
-    Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanright.jpg"));
-    Image ghost10 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost10.jpg"));
-    Image ghost20 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost20.jpg"));
-    Image ghost30 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost30.jpg"));
-    Image ghost40 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost40.jpg"));
-    Image ghost11 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost11.jpg"));
-    Image ghost21 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost21.jpg"));
-    Image ghost31 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost31.jpg"));
-    Image ghost41 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost41.jpg"));
-    Image titleScreenImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/titleScreen.jpg"));
-    Image gameOverImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/gameOver.jpg"));
-    Image winScreenImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/winScreen.jpg"));
+    private Image pacmanImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
+    private Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanup.jpg"));
+    private Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmandown.jpg"));
+    private Image pacmanLeftImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanleft.jpg"));
+    private Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanright.jpg"));
+    private Image ghost10 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost10.jpg"));
+    private Image ghost20 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost20.jpg"));
+    private Image ghost30 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost30.jpg"));
+    private Image ghost40 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost40.jpg"));
+    private Image ghost11 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost11.jpg"));
+    private Image ghost21 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost21.jpg"));
+    private Image ghost31 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost31.jpg"));
+    private Image ghost41 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost41.jpg"));
+    private Image titleScreenImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/titleScreen.jpg"));
+    private Image gameOverImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/gameOver.jpg"));
+    private Image winScreenImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/winScreen.jpg"));
 
     /* Initialize the player and ghosts */
     Player player = new Player(200, 300);
@@ -38,29 +38,30 @@ public class Board extends JPanel {
     Ghost ghost4 = new Ghost(220, 180);
 
     /* Timer is used for playing sound effects and animations */
-    long timer = System.currentTimeMillis();
+    private long timer = System.currentTimeMillis();
 
     /* Dying is used to count frames in the dying animation.  If it's non-zero, pacman is in the process of dying */
     int dying = 0;
 
     /* Score information */
-    int currScore;
-    int highScore;
+    private int currScore;
+    private int highScore;
 
     /* if the high scores have been cleared, we have to update the top of the screen to reflect that */
-    boolean clearHighScores = false;
+    private boolean clearHighScores = false;
 
-    int numLives = 2;
+    private int numLives = 2;
 
     /*Contains the game map, passed to player and ghosts */
-    boolean[][] state;
+    private boolean[][] state;
+    private GameMap map;
 
     /* Contains the state of all pellets*/
-    boolean[][] pellets;
+    private boolean[][] pellets;
 
     /* Game dimensions */
-    int gridSize;
-    int max;
+    private int gridSize;
+    private int max;
 
     /* State flags*/
     boolean stopped;
@@ -68,16 +69,16 @@ public class Board extends JPanel {
     boolean winScreen = false;
     boolean overScreen = false;
     boolean demo = false;
-    int New;
+    int gameFrame;
 
     /* Used to call sound effects */
     GameSounds sounds;
 
-    int lastPelletEatenX = 0;
-    int lastPelletEatenY = 0;
+    private int lastPelletEatenX = 0;
+    private int lastPelletEatenY = 0;
 
     /* This is the font used for the menus */
-    Font font = new Font("Monospaced", Font.BOLD, 12);
+    private Font font = new Font("Monospaced", Font.BOLD, 12);
 
     /* Constructor initializes state flags etc.*/
     public Board() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -87,7 +88,7 @@ public class Board extends JPanel {
         stopped = false;
         max = 400;
         gridSize = 20;
-        New = 0;
+        gameFrame = 0;
         titleScreen = true;
     }
 
@@ -142,6 +143,8 @@ public class Board extends JPanel {
                 pellets[i][j] = true;
             }
         }
+        createWalls();
+        map = new GameMap(state);
 
         /* Handle the weird spots with no pellets*/
         for (int i = 5; i < 14; i++) {
@@ -162,7 +165,7 @@ public class Board extends JPanel {
        the map and pellets arrays are updated accordingly to note
        that those are invalid locations to travel or put pellets
     */
-    public void updateMap(int x, int y, int width, int height) {
+    private void fillWall(int x, int y, int width, int height) {
         for (int i = x / gridSize; i < x / gridSize + width / gridSize; i++) {
             for (int j = y / gridSize; j < y / gridSize + height / gridSize; j++) {
                 state[i - 1][j - 1] = false;
@@ -194,7 +197,7 @@ Also draws the menu */
 
 
     /*  This function draws the board.  The pacman board is really complicated and can only feasibly be done
-manually.  Whenever I draw a wall, I call updateMap to invalidate those coordinates.  This way the pacman
+manually.  Whenever I draw a wall, I call fillWall to invalidate those coordinates.  This way the pacman
 and ghosts know that they can't traverse this area */
     public void drawBoard(Graphics g) {
         g.setColor(Color.BLACK);
@@ -207,99 +210,101 @@ and ghosts know that they can't traverse this area */
         g.fillRect(0, 0, 600, 20);
         g.setColor(Color.WHITE);
         g.drawRect(19, 19, 382, 382);
-        g.setColor(Color.BLUE);
 
+        g.setColor(Color.BLUE);
         g.fillRect(40, 40, 60, 20);
-        updateMap(40, 40, 60, 20);
         g.fillRect(120, 40, 60, 20);
-        updateMap(120, 40, 60, 20);
         g.fillRect(200, 20, 20, 40);
-        updateMap(200, 20, 20, 40);
         g.fillRect(240, 40, 60, 20);
-        updateMap(240, 40, 60, 20);
         g.fillRect(320, 40, 60, 20);
-        updateMap(320, 40, 60, 20);
         g.fillRect(40, 80, 60, 20);
-        updateMap(40, 80, 60, 20);
         g.fillRect(160, 80, 100, 20);
-        updateMap(160, 80, 100, 20);
         g.fillRect(200, 80, 20, 60);
-        updateMap(200, 80, 20, 60);
         g.fillRect(320, 80, 60, 20);
-        updateMap(320, 80, 60, 20);
 
         g.fillRect(20, 120, 80, 60);
-        updateMap(20, 120, 80, 60);
         g.fillRect(320, 120, 80, 60);
-        updateMap(320, 120, 80, 60);
         g.fillRect(20, 200, 80, 60);
-        updateMap(20, 200, 80, 60);
         g.fillRect(320, 200, 80, 60);
-        updateMap(320, 200, 80, 60);
 
         g.fillRect(160, 160, 40, 20);
-        updateMap(160, 160, 40, 20);
         g.fillRect(220, 160, 40, 20);
-        updateMap(220, 160, 40, 20);
         g.fillRect(160, 180, 20, 20);
-        updateMap(160, 180, 20, 20);
         g.fillRect(160, 200, 100, 20);
-        updateMap(160, 200, 100, 20);
         g.fillRect(240, 180, 20, 20);
-        updateMap(240, 180, 20, 20);
-        g.setColor(Color.BLUE);
-
 
         g.fillRect(120, 120, 60, 20);
-        updateMap(120, 120, 60, 20);
         g.fillRect(120, 80, 20, 100);
-        updateMap(120, 80, 20, 100);
         g.fillRect(280, 80, 20, 100);
-        updateMap(280, 80, 20, 100);
         g.fillRect(240, 120, 60, 20);
-        updateMap(240, 120, 60, 20);
 
         g.fillRect(280, 200, 20, 60);
-        updateMap(280, 200, 20, 60);
         g.fillRect(120, 200, 20, 60);
-        updateMap(120, 200, 20, 60);
         g.fillRect(160, 240, 100, 20);
-        updateMap(160, 240, 100, 20);
         g.fillRect(200, 260, 20, 40);
-        updateMap(200, 260, 20, 40);
 
         g.fillRect(120, 280, 60, 20);
-        updateMap(120, 280, 60, 20);
         g.fillRect(240, 280, 60, 20);
-        updateMap(240, 280, 60, 20);
 
         g.fillRect(40, 280, 60, 20);
-        updateMap(40, 280, 60, 20);
         g.fillRect(80, 280, 20, 60);
-        updateMap(80, 280, 20, 60);
         g.fillRect(320, 280, 60, 20);
-        updateMap(320, 280, 60, 20);
         g.fillRect(320, 280, 20, 60);
-        updateMap(320, 280, 20, 60);
+
 
         g.fillRect(20, 320, 40, 20);
-        updateMap(20, 320, 40, 20);
         g.fillRect(360, 320, 40, 20);
-        updateMap(360, 320, 40, 20);
         g.fillRect(160, 320, 100, 20);
-        updateMap(160, 320, 100, 20);
         g.fillRect(200, 320, 20, 60);
-        updateMap(200, 320, 20, 60);
 
         g.fillRect(40, 360, 140, 20);
-        updateMap(40, 360, 140, 20);
         g.fillRect(240, 360, 140, 20);
-        updateMap(240, 360, 140, 20);
         g.fillRect(280, 320, 20, 40);
-        updateMap(280, 320, 20, 60);
         g.fillRect(120, 320, 20, 60);
-        updateMap(120, 320, 20, 60);
         drawLives(g);
+    }
+
+    private void createWalls() {
+        fillWall(40, 40, 60, 20);
+        fillWall(120, 40, 60, 20);
+        fillWall(200, 20, 20, 40);
+        fillWall(240, 40, 60, 20);
+        fillWall(320, 40, 60, 20);
+        fillWall(40, 80, 60, 20);
+        fillWall(160, 80, 100, 20);
+        fillWall(200, 80, 20, 60);
+        fillWall(320, 80, 60, 20);
+        fillWall(20, 120, 80, 60);
+        fillWall(320, 120, 80, 60);
+        fillWall(20, 200, 80, 60);
+        fillWall(320, 200, 80, 60);
+        fillWall(160, 160, 40, 20);
+        fillWall(220, 160, 40, 20);
+        fillWall(160, 180, 20, 20);
+        fillWall(160, 200, 100, 20);
+        fillWall(240, 180, 20, 20);
+        fillWall(120, 120, 60, 20);
+        fillWall(120, 80, 20, 100);
+        fillWall(280, 80, 20, 100);
+        fillWall(240, 120, 60, 20);
+        fillWall(280, 200, 20, 60);
+        fillWall(120, 200, 20, 60);
+        fillWall(160, 240, 100, 20);
+        fillWall(200, 260, 20, 40);
+        fillWall(120, 280, 60, 20);
+        fillWall(240, 280, 60, 20);
+        fillWall(40, 280, 60, 20);
+        fillWall(80, 280, 20, 60);
+        fillWall(320, 280, 60, 20);
+        fillWall(320, 280, 20, 60);
+        fillWall(20, 320, 40, 20);
+        fillWall(360, 320, 40, 20);
+        fillWall(160, 320, 100, 20);
+        fillWall(200, 320, 20, 60);
+        fillWall(40, 360, 140, 20);
+        fillWall(240, 360, 140, 20);
+        fillWall(280, 320, 20, 40);
+        fillWall(120, 320, 20, 60);
     }
 
 
@@ -382,7 +387,7 @@ for the final frame to allow for the sound effect to end */
 
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
-            New = 1;
+            gameFrame = 1;
             return;
         }
 
@@ -391,7 +396,7 @@ for the final frame to allow for the sound effect to end */
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 600, 600);
             g.drawImage(winScreenImage, 0, 0, Color.BLACK, null);
-            New = 1;
+            gameFrame = 1;
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
             return;
@@ -402,7 +407,7 @@ for the final frame to allow for the sound effect to end */
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 600, 600);
             g.drawImage(gameOverImage, 0, 0, Color.BLACK, null);
-            New = 1;
+            gameFrame = 1;
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
             return;
@@ -425,25 +430,19 @@ for the final frame to allow for the sound effect to end */
         boolean oops = false;
 
         /* Game initialization */
-        if (New == 1) {
+        if (gameFrame == 1) {
             reset();
-            player = new Player(200, 300);
-            ghost1 = new Ghost(180, 180);
-            ghost2 = new Ghost(200, 180);
-            ghost3 = new Ghost(220, 180);
-            ghost4 = new Ghost(220, 180);
+            player = new Player(200, 300, map);
+            ghost1 = new Ghost(180, 180, map);
+            ghost2 = new Ghost(200, 180, map);
+            ghost3 = new Ghost(220, 180, map);
+            ghost4 = new Ghost(220, 180, map);
             currScore = 0;
             drawBoard(g);
             drawPellets(g);
             drawLives(g);
-            /* Send the game map to player and all ghosts */
-            player.updateState(state);
-            /* Don't let the player go in the ghost box*/
-            player.state[9][7] = false;
-            ghost1.updateState(state);
-            ghost2.updateState(state);
-            ghost3.updateState(state);
-            ghost4.updateState(state);
+            /* TODO: Easter Egg! Don't let the player go in the ghost box*/
+            // player.state[9][7] = false;
 
             /* Draw the top menu bar*/
             g.setColor(Color.YELLOW);
@@ -452,26 +451,26 @@ for the final frame to allow for the sound effect to end */
                 g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
             else
                 g.drawString("Score: " + (currScore) + "\t High Score: " + highScore, 20, 10);
-            New++;
+            gameFrame++;
         }
         /* Second frame of new game */
-        else if (New == 2) {
-            New++;
+        else if (gameFrame == 2) {
+            gameFrame++;
         }
         /* Third frame of new game */
-        else if (New == 3) {
-            New++;
+        else if (gameFrame == 3) {
+            gameFrame++;
             /* Play the newGame sound effect */
             sounds.newGame();
             timer = System.currentTimeMillis();
             return;
         }
         /* Fourth frame of new game */
-        else if (New == 4) {
+        else if (gameFrame == 4) {
             /* Stay in this state until the sound effect is over */
             long currTime = System.currentTimeMillis();
             if (currTime - timer >= 5000) {
-                New = 0;
+                gameFrame = 0;
             } else
                 return;
         }
@@ -528,7 +527,7 @@ for the final frame to allow for the sound effect to end */
         g.fillRect(ghost4.lastX, ghost4.lastY, 20, 20);
 
         /* Eat pellets */
-        if (pellets[player.pelletX][player.pelletY] && New != 2 && New != 3) {
+        if (pellets[player.pelletX][player.pelletY] && gameFrame != 2 && gameFrame != 3) {
             lastPelletEatenX = player.pelletX;
             lastPelletEatenY = player.pelletY;
 

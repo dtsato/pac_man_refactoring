@@ -1,13 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created with IntelliJ IDEA.
- * User: dtsato
- * Date: 15/05/2013
- * Time: 21:17
- * To change this template use File | Settings | File Templates.
- */ /* This is the pacman object */
+/* This is the pacman object */
 class Player extends Mover {
     /* Direction is used in demoMode, currDirection and desiredDirection are used in non demoMode*/
     char direction;
@@ -36,8 +30,8 @@ class Player extends Mover {
     boolean stopped = false;
 
     /* Constructor places pacman in initial location and orientation */
-    public Player(int x, int y) {
-
+    public Player(int x, int y, GameMap map) {
+        super(map);
         teleport = false;
         pelletsEaten = 0;
         pelletX = x / gridSize - 1;
@@ -48,6 +42,10 @@ class Player extends Mover {
         this.y = y;
         currDirection = 'L';
         desiredDirection = 'L';
+    }
+
+    public Player(int x, int y) {
+        this(x, y, null);
     }
 
 
