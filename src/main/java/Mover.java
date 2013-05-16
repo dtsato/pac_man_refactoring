@@ -3,9 +3,6 @@ class Mover {
     /* Framecount is used to count animation frames*/
     int frameCount = 0;
 
-    /* State contains the game map */
-    private boolean[][] state;
-
     /* gridSize is the size of one square in the game.
 max is the height/width of the game.
 increment is the speed at which the object moves,
@@ -21,19 +18,13 @@ increment is the speed at which the object moves,
         gridSize = 20;
         increment = 4;
         max = 400;
-        state = new boolean[20][20];
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                state[i][j] = map != null && map.getState(i, j);
-            }
-        }
     }
 
     /* Determines if a set of coordinates is a valid destination.*/
     public boolean isValidDest(int x, int y) {
         /* The first statements check that the x and y are inbounds.  The last statement checks the map to
   see if it's a valid location */
-        if ((((x) % 20 == 0) || ((y) % 20) == 0) && 20 <= x && x < 400 && 20 <= y && y < 400 && state[x / 20 - 1][y / 20 - 1]) {
+        if ((((x) % 20 == 0) || ((y) % 20) == 0) && 20 <= x && x < 400 && 20 <= y && y < 400 && map.getState(x / 20 - 1, y / 20 - 1)) {
             return true;
         }
         return false;

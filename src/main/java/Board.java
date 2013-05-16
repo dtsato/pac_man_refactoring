@@ -1,11 +1,8 @@
 /* Drew Schuster */
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
