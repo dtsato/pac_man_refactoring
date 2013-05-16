@@ -1,8 +1,11 @@
 /* Drew Schuster */
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 /* This class contains the entire game... most of the game logic is in the Board class but this
    creates the gui and captures mouse and keyboard input, as well as controls the game states */
@@ -13,14 +16,15 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
     long timer = -1;
 
     /* Create a new board */
-    Board b = new Board();
+    Board b;
 
     /* This timer is used to do request new frames be drawn*/
     javax.swing.Timer frameTimer;
 
 
     /* This constructor creates the entire game essentially */
-    public Pacman() {
+    public Pacman() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        b = new Board();
         b.requestFocus();
 
         /* Create and set up window frame*/
@@ -275,7 +279,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
     }
 
     /* Main function simply creates a new pacman instance*/
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Pacman c = new Pacman();
     }
 }

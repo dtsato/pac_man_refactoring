@@ -1,8 +1,11 @@
 /* Drew Schuster */
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -37,8 +40,7 @@ public class Board extends JPanel {
     /* Timer is used for playing sound effects and animations */
     long timer = System.currentTimeMillis();
 
-    /* Dying is used to count frames in the dying animation.  If it's non-zero,
-pacman is in the process of dying */
+    /* Dying is used to count frames in the dying animation.  If it's non-zero, pacman is in the process of dying */
     int dying = 0;
 
     /* Score information */
@@ -78,7 +80,7 @@ pacman is in the process of dying */
     Font font = new Font("Monospaced", Font.BOLD, 12);
 
     /* Constructor initializes state flags etc.*/
-    public Board() {
+    public Board() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         initHighScores();
         sounds = new GameSounds();
         currScore = 0;
