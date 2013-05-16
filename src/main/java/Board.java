@@ -54,9 +54,6 @@ public class Board extends JPanel {
 
     private GameMap map;
 
-    /* Contains the state of all pellets*/
-    private boolean[][] pellets;
-
     /* Game dimensions */
     private int gridSize;
     private int max;
@@ -131,90 +128,8 @@ public class Board extends JPanel {
     /* Reset occurs on a new game*/
     public void reset() {
         numLives = 2;
-        pellets = new boolean[20][20];
-
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                pellets[i][j] = true;
-            }
-        }
-        boolean[][] state = new boolean[20][20];
-        /* Clear state and pellets arrays */
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                state[i][j] = true;
-            }
-        }
-        fillWall(40, 40, 60, 20, state);
-        fillWall(120, 40, 60, 20, state);
-        fillWall(200, 20, 20, 40, state);
-        fillWall(240, 40, 60, 20, state);
-        fillWall(320, 40, 60, 20, state);
-        fillWall(40, 80, 60, 20, state);
-        fillWall(160, 80, 100, 20, state);
-        fillWall(200, 80, 20, 60, state);
-        fillWall(320, 80, 60, 20, state);
-        fillWall(20, 120, 80, 60, state);
-        fillWall(320, 120, 80, 60, state);
-        fillWall(20, 200, 80, 60, state);
-        fillWall(320, 200, 80, 60, state);
-        fillWall(160, 160, 40, 20, state);
-        fillWall(220, 160, 40, 20, state);
-        fillWall(160, 180, 20, 20, state);
-        fillWall(160, 200, 100, 20, state);
-        fillWall(240, 180, 20, 20, state);
-        fillWall(120, 120, 60, 20, state);
-        fillWall(120, 80, 20, 100, state);
-        fillWall(280, 80, 20, 100, state);
-        fillWall(240, 120, 60, 20, state);
-        fillWall(280, 200, 20, 60, state);
-        fillWall(120, 200, 20, 60, state);
-        fillWall(160, 240, 100, 20, state);
-        fillWall(200, 260, 20, 40, state);
-        fillWall(120, 280, 60, 20, state);
-        fillWall(240, 280, 60, 20, state);
-        fillWall(40, 280, 60, 20, state);
-        fillWall(80, 280, 20, 60, state);
-        fillWall(320, 280, 60, 20, state);
-        fillWall(320, 280, 20, 60, state);
-        fillWall(20, 320, 40, 20, state);
-        fillWall(360, 320, 40, 20, state);
-        fillWall(160, 320, 100, 20, state);
-        fillWall(200, 320, 20, 60, state);
-        fillWall(40, 360, 140, 20, state);
-        fillWall(240, 360, 140, 20, state);
-        fillWall(280, 320, 20, 40, state);
-        fillWall(120, 320, 20, 60, state);
-        map = new GameMap(state);
-
-        /* Handle the weird spots with no pellets*/
-        for (int i = 5; i < 14; i++) {
-            for (int j = 5; j < 12; j++) {
-                pellets[i][j] = false;
-            }
-        }
-        pellets[9][7] = false;
-        pellets[8][8] = false;
-        pellets[9][8] = false;
-        pellets[10][8] = false;
-
+        map = new GameMap();
     }
-
-
-    /* Function is called during drawing of the map.
-       Whenever the a portion of the map is covered up with a barrier,
-       the map and pellets arrays are updated accordingly to note
-       that those are invalid locations to travel or put pellets
-    */
-    private void fillWall(int x, int y, int width, int height, boolean[][] state) {
-        for (int i = x / gridSize; i < x / gridSize + width / gridSize; i++) {
-            for (int j = y / gridSize; j < y / gridSize + height / gridSize; j++) {
-                state[i - 1][j - 1] = false;
-                pellets[i - 1][j - 1] = false;
-            }
-        }
-    }
-
 
     /* Draws the appropriate number of lives on the bottom left of the screen.
 Also draws the menu */
@@ -308,11 +223,10 @@ and ghosts know that they can't traverse this area */
 
     /* Draws the pellets on the screen */
     public void drawPellets(Graphics g) {
-        g.setColor(Color.YELLOW);
-        for (int i = 1; i < 20; i++) {
-            for (int j = 1; j < 20; j++) {
-                if (pellets[i - 1][j - 1])
-                    g.fillOval(i * 20 + 8, j * 20 + 8, 4, 4);
+        for (int i = 0; i < 19; i++) {
+            for (int j = 0; j < 19; j++) {
+                if (map.hasPellet(i, j))
+                    fillPellet(i, j, g);
             }
         }
     }
@@ -525,7 +439,7 @@ for the final frame to allow for the sound effect to end */
         g.fillRect(ghost4.lastX, ghost4.lastY, 20, 20);
 
         /* Eat pellets */
-        if (pellets[player.pelletX][player.pelletY] && gameFrame != 2 && gameFrame != 3) {
+        if (map.hasPellet(player.pelletX, player.pelletY) && gameFrame != 2 && gameFrame != 3) {
             lastPelletEatenX = player.pelletX;
             lastPelletEatenY = player.pelletY;
 
@@ -536,7 +450,7 @@ for the final frame to allow for the sound effect to end */
             player.pelletsEaten++;
 
             /* Delete the pellet*/
-            pellets[player.pelletX][player.pelletY] = false;
+            map.eatPellet(player.pelletX, player.pelletY);
 
             /* Increment the score */
             currScore += 50;
@@ -574,13 +488,13 @@ for the final frame to allow for the sound effect to end */
 
 
         /* Replace pellets that have been run over by ghosts */
-        if (pellets[ghost1.lastPelletX][ghost1.lastPelletY])
+        if (map.hasPellet(ghost1.lastPelletX, ghost1.lastPelletY))
             fillPellet(ghost1.lastPelletX, ghost1.lastPelletY, g);
-        if (pellets[ghost2.lastPelletX][ghost2.lastPelletY])
+        if (map.hasPellet(ghost2.lastPelletX, ghost2.lastPelletY))
             fillPellet(ghost2.lastPelletX, ghost2.lastPelletY, g);
-        if (pellets[ghost3.lastPelletX][ghost3.lastPelletY])
+        if (map.hasPellet(ghost3.lastPelletX, ghost3.lastPelletY))
             fillPellet(ghost3.lastPelletX, ghost3.lastPelletY, g);
-        if (pellets[ghost4.lastPelletX][ghost4.lastPelletY])
+        if (map.hasPellet(ghost4.lastPelletX, ghost4.lastPelletY))
             fillPellet(ghost4.lastPelletX, ghost4.lastPelletY, g);
 
 
