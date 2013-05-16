@@ -1,7 +1,7 @@
 /* Drew Schuster */
-import java.io.*;
-import java.net.URL;
-import javax.sound.sampled.*;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 
 /* This class controls all sound effects*/
@@ -12,34 +12,23 @@ public class GameSounds{
     Clip death;
     /* Keeps track of whether or not the eating sound is playing*/
     boolean stopped;
-       
 
 /* Initialize audio files */ 
     public GameSounds(){
-        stopped=true; 
-        URL url;
-        AudioInputStream audioIn;
-        
-        try{
-            // Pacman eating sound
-            url = this.getClass().getClassLoader().getResource("sounds/nomnom.wav");
-            audioIn = AudioSystem.getAudioInputStream(url);
+        stopped=true;
+        try {
             nomNom = AudioSystem.getClip();
-            nomNom.open(audioIn);
-            
-            // newGame        
-            url = this.getClass().getClassLoader().getResource("sounds/newGame.wav");
-            audioIn = AudioSystem.getAudioInputStream(url);
-            newGame = AudioSystem.getClip();
-            newGame.open(audioIn);
-            
-            // death        
-            url = this.getClass().getClassLoader().getResource("sounds/death.wav");
-            audioIn = AudioSystem.getAudioInputStream(url);
-            death = AudioSystem.getClip();
-            death.open(audioIn);
+            nomNom.open(AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResource("sounds/nomnom.wav")));
 
-        }catch(Exception e){}
+            // newGame
+            newGame = AudioSystem.getClip();
+            newGame.open(AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResource("sounds/newGame.wav")));
+
+            // death
+            death = AudioSystem.getClip();
+            death.open(AudioSystem.getAudioInputStream(this.getClass().getClassLoader().getResource("sounds/death.wav")));
+        } catch (Exception e) {
+        }
     }
     
     /* Play pacman eating sound */
