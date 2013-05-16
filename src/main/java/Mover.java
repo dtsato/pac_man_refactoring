@@ -7,10 +7,10 @@ class Mover {
 max is the height/width of the game.
 increment is the speed at which the object moves,
 1 increment per move() call */
-    int gridSize;
-    int max;
-    int increment;
-    private final GameMap map;
+    protected int gridSize;
+    protected int max;
+    protected int increment;
+    protected final GameMap map;
 
     /* Generic constructor */
     public Mover(GameMap map) {
@@ -21,7 +21,7 @@ increment is the speed at which the object moves,
     }
 
     /* Determines if a set of coordinates is a valid destination.*/
-    public boolean isValidDest(int x, int y) {
+    protected boolean isValidDest(int x, int y) {
         /* The first statements check that the x and y are inbounds.  The last statement checks the map to
   see if it's a valid location */
         if ((((x) % 20 == 0) || ((y) % 20) == 0) && 20 <= x && x < 400 && 20 <= y && y < 400 && map.getState(x / 20 - 1, y / 20 - 1)) {

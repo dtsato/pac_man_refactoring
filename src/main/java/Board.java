@@ -77,8 +77,7 @@ public class Board extends JPanel {
         initHighScores();
         try {
         	sounds = new GameSounds();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         	sounds = new NoSounds();
         }
         currScore = 0;
