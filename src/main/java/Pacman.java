@@ -1,8 +1,16 @@
 /* Drew Schuster */
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JApplet;
+import javax.swing.JFrame;
+import javax.swing.Timer;
 
 /* This class contains the entire game... most of the game logic is in the Board class but this
    creates the gui and captures mouse and keyboard input, as well as controls the game states */
@@ -59,7 +67,7 @@ public class Pacman implements MouseListener, KeyListener {
     /* Steps the screen forward one frame */
     public void stepFrame(boolean firstFrame) {
         /* If we aren't on a special screen than the timers can be set to -1 to disable them */
-        if (!board.titleScreen && !board.winScreen && !board.overScreen) {
+        if (!board.titleScreenB && !board.winScreenB && !board.overScreenB) {
             timer = -1;
             titleTimer = -1;
         }
@@ -76,14 +84,14 @@ public class Pacman implements MouseListener, KeyListener {
 
         /* If this is the title screen, make sure to only stay on the title screen for 5 seconds.
 If after 5 seconds the user hasn't started a game, start up demo mode */
-        if (board.titleScreen) {
+        if (board.titleScreenB) {
             if (titleTimer == -1) {
                 titleTimer = System.currentTimeMillis();
             }
 
             long currTime = System.currentTimeMillis();
             if (currTime - titleTimer >= 5000) {
-                board.titleScreen = false;
+                board.titleScreenB = false;
                 board.demo = true;
                 titleTimer = -1;
             }
@@ -93,16 +101,16 @@ If after 5 seconds the user hasn't started a game, start up demo mode */
 
         /* If this is the win screen or game over screen, make sure to only stay on the screen for 5 seconds.
 If after 5 seconds the user hasn't pressed a key, go to title screen */
-        else if (board.winScreen || board.overScreen) {
+        else if (board.winScreenB || board.overScreenB) {
             if (timer == -1) {
                 timer = System.currentTimeMillis();
             }
 
             long currTime = System.currentTimeMillis();
             if (currTime - timer >= 5000) {
-                board.winScreen = false;
-                board.overScreen = false;
-                board.titleScreen = true;
+                board.winScreenB = false;
+                board.overScreenB = false;
+                board.titleScreenB = true;
                 timer = -1;
             }
             board.repaint();
@@ -174,15 +182,15 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
     /* Handles user key presses*/
     public void keyPressed(KeyEvent e) {
         /* Pressing a key in the title screen starts a game */
-        if (board.titleScreen) {
-            board.titleScreen = false;
+        if (board.titleScreenB) {
+            board.titleScreenB = false;
             return;
         }
         /* Pressing a key in the win screen or game over screen goes to the title screen */
-        else if (board.winScreen || board.overScreen) {
-            board.titleScreen = true;
-            board.winScreen = false;
-            board.overScreen = false;
+        else if (board.winScreenB || board.overScreenB) {
+            board.titleScreenB = true;
+            board.winScreenB = false;
+            board.overScreenB = false;
             return;
         }
         /* Pressing a key during a demo kills the demo mode and starts a new game */
@@ -215,7 +223,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
 
     /* This function detects user clicks on the menu items on the bottom of the screen */
     public void mousePressed(MouseEvent e) {
-        if (board.titleScreen || board.winScreen || board.overScreen) {
+        if (board.titleScreenB || board.winScreenB || board.overScreenB) {
             /* If we aren't in the game where a menu is showing, ignore clicks */
             return;
         }

@@ -1,10 +1,15 @@
 /* Drew Schuster */
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
+import javax.swing.JPanel;
 
 
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
@@ -22,9 +27,6 @@ public class Board extends JPanel {
     private static final Image GHOST_21_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost21.jpg"));
     private static final Image GHOST_31_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost31.jpg"));
     private static final Image GHOST_41_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost41.jpg"));
-    private static final Image TITLE_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/titleScreen.jpg"));
-    private static final Image GAME_OVER_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/gameOver.jpg"));
-    private static final Image WIN_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/winScreen.jpg"));
 
     private static final Font FONT = new Font("Monospaced", Font.BOLD, 12);
 
@@ -58,9 +60,12 @@ public class Board extends JPanel {
 
     /* State flags*/
     boolean stopped;
-    boolean titleScreen;
-    boolean winScreen = false;
-    boolean overScreen = false;
+    boolean titleScreenB;
+    private TitleScreen titleScreen;
+    boolean winScreenB = false;
+    private WinScreen winScreen;
+    boolean overScreenB = false;
+    private OverScreen overScreen;
     boolean demo = false;
     int gameFrame;
 
@@ -82,7 +87,10 @@ public class Board extends JPanel {
         max = 400;
         gridSize = 20;
         gameFrame = 0;
-        titleScreen = true;
+        titleScreenB = true;
+        titleScreen = new TitleScreen(sounds, this);
+        winScreen = new WinScreen(sounds, this);
+        overScreen = new OverScreen(sounds, this);
     }
 
     /* Reads the high scores file and saves it */
@@ -273,7 +281,7 @@ for the final frame to allow for the sound effect to end */
                             if (currScore > highScore) {
                                 updateScore(currScore);
                             }
-                            overScreen = true;
+                            overScreenB = true;
                         }
                     }
                 }
@@ -282,36 +290,20 @@ for the final frame to allow for the sound effect to end */
         }
 
         /* If this is the title screen, draw the title screen and return */
-        if (titleScreen) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 600);
-            g.drawImage(TITLE_SCREEN_IMAGE, 0, 0, Color.BLACK, null);
-
-            /* Stop any pacman eating sounds */
-            sounds.nomNomStop();
-            gameFrame = 1;
+        if (titleScreenB) {
+        	titleScreen.paint(g);
             return;
         }
 
         /* If this is the win screen, draw the win screen and return */
-        else if (winScreen) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 600);
-            g.drawImage(WIN_SCREEN_IMAGE, 0, 0, Color.BLACK, null);
-            gameFrame = 1;
-            /* Stop any pacman eating sounds */
-            sounds.nomNomStop();
+        else if (winScreenB) {
+            winScreen.paint(g);
             return;
         }
 
         /* If this is the game over screen, draw the game over screen and return */
-        else if (overScreen) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 600);
-            g.drawImage(GAME_OVER_IMAGE, 0, 0, Color.BLACK, null);
-            gameFrame = 1;
-            /* Stop any pacman eating sounds */
-            sounds.nomNomStop();
+        else if (overScreenB) {
+        	overScreen.paing(g);
             return;
         }
 
@@ -462,9 +454,9 @@ for the final frame to allow for the sound effect to end */
                     if (currScore > highScore) {
                         updateScore(currScore);
                     }
-                    winScreen = true;
+                    winScreenB = true;
                 } else {
-                    titleScreen = true;
+                    titleScreenB = true;
                 }
                 return;
             }
