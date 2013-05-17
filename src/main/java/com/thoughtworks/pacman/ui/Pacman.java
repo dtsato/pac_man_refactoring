@@ -1,4 +1,5 @@
 /* Drew Schuster */
+package com.thoughtworks.pacman.ui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -279,10 +279,5 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
         frameTimer.start();
 
         board.requestFocus();
-    }
-
-    public static void main(String[] args) throws Exception {
-        Pacman game = new Pacman();
-        game.play();
     }
 }

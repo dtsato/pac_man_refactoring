@@ -1,3 +1,7 @@
+package com.thoughtworks.pacman.ui;
+
+import com.thoughtworks.pacman.sound.Sounds;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -5,8 +9,7 @@ import java.awt.Toolkit;
 
 public class TitleScreen {
 	// TODO The following line is duplicated!
-	private static final Image TITLE_SCREEN_IMAGE = Toolkit.getDefaultToolkit()
-			.getImage(Pacman.class.getResource("img/titleScreen.jpg"));
+	private static final Image TITLE_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("titleScreen.jpg"));
 
 	private Sounds sounds;
 	private Board board;

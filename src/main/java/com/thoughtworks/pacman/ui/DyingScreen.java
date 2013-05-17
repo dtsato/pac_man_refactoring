@@ -1,3 +1,7 @@
+package com.thoughtworks.pacman.ui;
+
+import com.thoughtworks.pacman.sound.Sounds;
+
 import java.awt.Color;
 import java.awt.Graphics;
 

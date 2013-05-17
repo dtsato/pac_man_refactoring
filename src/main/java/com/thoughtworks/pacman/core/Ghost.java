@@ -1,11 +1,15 @@
+package com.thoughtworks.pacman.core;
+
+import com.thoughtworks.pacman.ui.Pacman;
+
 /* Ghost class controls the ghost. */
-class Ghost extends Entity {
+public class Ghost extends Entity {
 
     /* The pellet the ghost is on top of */
     private int pelletX, pelletY;
 
     /* The pellet the ghost was last on top of */
-    int lastPelletX, lastPelletY;
+    public int lastPelletX, lastPelletY;
 
     /*Constructor places ghost and updates states*/
     public Ghost(int x, int y, GameMap map) {

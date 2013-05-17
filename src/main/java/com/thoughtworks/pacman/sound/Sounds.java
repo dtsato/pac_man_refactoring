@@ -1,3 +1,4 @@
+package com.thoughtworks.pacman.sound;
 
 public interface Sounds {
 

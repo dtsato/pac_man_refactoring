@@ -1,19 +1,23 @@
+package com.thoughtworks.pacman.core;
+
+import com.thoughtworks.pacman.ui.Pacman;
+
 /* This is the pacman object */
-class Player extends Entity {
-    char currDirection;
-    char desiredDirection;
+public class Player extends Entity {
+    public char currDirection;
+    public char desiredDirection;
 
     /* Keeps track of pellets eaten to determine end of game */
     int pelletsEaten;
 
     /* Which pellet the pacman is on top of */
-    int pelletX, pelletY;
+    public int pelletX, pelletY;
 
     /* teleport is true when travelling through the teleport tunnels*/
-    boolean teleport;
+    public boolean teleport;
 
     /* Stopped is set when the pacman is not moving or has been killed */
-    boolean stopped = false;
+    public boolean stopped = false;
 
     /* Constructor places pacman in initial location and orientation */
     public Player(int x, int y, GameMap map) {
@@ -152,5 +156,13 @@ class Player extends Entity {
             pelletX = x / Pacman.TILE_SIZE - 1;
             pelletY = y / Pacman.TILE_SIZE - 1;
         }
+    }
+
+    public void eatPellet() {
+        pelletsEaten++;
+    }
+
+    public int getPelletsEaten() {
+        return pelletsEaten;
     }
 }

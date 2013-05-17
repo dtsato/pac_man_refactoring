@@ -1,18 +1,22 @@
+package com.thoughtworks.pacman.core;
+
+import com.thoughtworks.pacman.ui.Pacman;
+
 import java.util.HashSet;
 import java.util.Set;
 
 /* Both Player and Ghost inherit Entity.  Has generic functions relevant to both*/
-class Entity {
+public class Entity {
     /* Framecount is used to count animation frames*/
-    int frameCount = 0;
+    public int frameCount = 0;
 
     protected final static int INCREMENT = 4;
 
     protected final GameMap map;
 
-    int x, y;
-    int lastX, lastY;
-    protected char direction;
+    public int x, y;
+    public int lastX, lastY;
+    public char direction;
 
     /* Generic constructor */
     public Entity(int x, int y, GameMap map) {

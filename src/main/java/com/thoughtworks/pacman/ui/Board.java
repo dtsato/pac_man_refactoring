@@ -1,4 +1,12 @@
 /* Drew Schuster */
+package com.thoughtworks.pacman.ui;
+
+import com.thoughtworks.pacman.core.GameMap;
+import com.thoughtworks.pacman.core.Ghost;
+import com.thoughtworks.pacman.core.Player;
+import com.thoughtworks.pacman.sound.GameSounds;
+import com.thoughtworks.pacman.sound.NoSounds;
+import com.thoughtworks.pacman.sound.Sounds;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,19 +21,19 @@ import javax.swing.JPanel;
 
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
-    public static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
-    private static final Image PACMAN_UP_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanup.jpg"));
-    private static final Image PACMAN_DOWN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmandown.jpg"));
-    private static final Image PACMAN_LEFT_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanleft.jpg"));
-    private static final Image PACMAN_RIGHT_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanright.jpg"));
-    private static final Image GHOST_10_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost10.jpg"));
-    private static final Image GHOST_20_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost20.jpg"));
-    private static final Image GHOST_30_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost30.jpg"));
-    private static final Image GHOST_40_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost40.jpg"));
-    private static final Image GHOST_11_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost11.jpg"));
-    private static final Image GHOST_21_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost21.jpg"));
-    private static final Image GHOST_31_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost31.jpg"));
-    private static final Image GHOST_41_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost41.jpg"));
+    public static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacman.jpg"));
+    private static final Image PACMAN_UP_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmanup.jpg"));
+    private static final Image PACMAN_DOWN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmandown.jpg"));
+    private static final Image PACMAN_LEFT_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmanleft.jpg"));
+    private static final Image PACMAN_RIGHT_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmanright.jpg"));
+    private static final Image GHOST_10_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost10.jpg"));
+    private static final Image GHOST_20_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost20.jpg"));
+    private static final Image GHOST_30_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost30.jpg"));
+    private static final Image GHOST_40_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost40.jpg"));
+    private static final Image GHOST_11_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost11.jpg"));
+    private static final Image GHOST_21_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost21.jpg"));
+    private static final Image GHOST_41_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost41.jpg"));
+    private static final Image GHOST_31_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("ghost31.jpg"));
 
     private static final Font FONT = new Font("Monospaced", Font.BOLD, 12);
 
@@ -180,7 +188,7 @@ and ghosts know that they can't traverse this area */
         for (int i = 0; i < Pacman.GRID_SIZE; i++) {
             for (int j = 0; j < Pacman.GRID_SIZE; j++) {
                 if (map.hasWall(i, j))
-                    g.fillRect((i+1) * Pacman.TILE_SIZE, (j+1) * Pacman.TILE_SIZE, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+                    g.fillRect((i + 1) * Pacman.TILE_SIZE, (j + 1) * Pacman.TILE_SIZE, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
             }
         }
     }
@@ -323,7 +331,7 @@ and ghosts know that they can't traverse this area */
             sounds.nomNom();
 
             /* Increment pellets eaten value to track for end game */
-            player.pelletsEaten++;
+            player.eatPellet();
 
             /* Delete the pellet*/
             map.eatPellet(player.pelletX, player.pelletY);
@@ -335,7 +343,7 @@ and ghosts know that they can't traverse this area */
             drawScore(g);
 
             /* If this was the last pellet */
-            if (player.pelletsEaten == 173) {
+            if (player.getPelletsEaten() == 173) {
                 /*Demo mode can't get a high score */
                 if (!demo) {
                     if (currScore > highScore) {

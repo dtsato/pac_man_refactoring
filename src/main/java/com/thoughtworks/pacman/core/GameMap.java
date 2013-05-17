@@ -1,3 +1,7 @@
+package com.thoughtworks.pacman.core;
+
+import com.thoughtworks.pacman.ui.Pacman;
+
 public class GameMap {
     private final boolean[][] state;
     private final boolean[][] pellets;

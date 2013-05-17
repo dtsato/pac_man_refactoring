@@ -1,3 +1,4 @@
+package com.thoughtworks.pacman.sound;
 
 public class NoSounds implements Sounds {
 

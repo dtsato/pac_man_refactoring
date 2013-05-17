@@ -1,11 +1,14 @@
+package com.thoughtworks.pacman.ui;
+
+import com.thoughtworks.pacman.sound.Sounds;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
 public class WinScreen {
-	private static final Image WIN_SCREEN_IMAGE = Toolkit.getDefaultToolkit()
-			.getImage(Pacman.class.getResource("img/winScreen.jpg"));
+	private static final Image WIN_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("winScreen.jpg"));
 
 	private Sounds sounds;
 	private Board board;
