@@ -9,23 +9,24 @@ import java.util.Scanner;
 
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
-    /* Initialize the images*/
-    private Image pacmanImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
-    private Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanup.jpg"));
-    private Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmandown.jpg"));
-    private Image pacmanLeftImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanleft.jpg"));
-    private Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanright.jpg"));
-    private Image ghost10 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost10.jpg"));
-    private Image ghost20 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost20.jpg"));
-    private Image ghost30 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost30.jpg"));
-    private Image ghost40 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost40.jpg"));
-    private Image ghost11 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost11.jpg"));
-    private Image ghost21 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost21.jpg"));
-    private Image ghost31 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost31.jpg"));
-    private Image ghost41 = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost41.jpg"));
-    private Image titleScreenImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/titleScreen.jpg"));
-    private Image gameOverImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/gameOver.jpg"));
-    private Image winScreenImage = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/winScreen.jpg"));
+    private static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
+    private static final Image PACMAN_UP_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanup.jpg"));
+    private static final Image PACMAN_DOWN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmandown.jpg"));
+    private static final Image PACMAN_LEFT_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanleft.jpg"));
+    private static final Image PACMAN_RIGHT_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanright.jpg"));
+    private static final Image GHOST_10_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost10.jpg"));
+    private static final Image GHOST_20_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost20.jpg"));
+    private static final Image GHOST_30_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost30.jpg"));
+    private static final Image GHOST_40_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost40.jpg"));
+    private static final Image GHOST_11_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost11.jpg"));
+    private static final Image GHOST_21_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost21.jpg"));
+    private static final Image GHOST_31_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost31.jpg"));
+    private static final Image GHOST_41_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/ghost41.jpg"));
+    private static final Image TITLE_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/titleScreen.jpg"));
+    private static final Image GAME_OVER_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/gameOver.jpg"));
+    private static final Image WIN_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/winScreen.jpg"));
+
+    private static final Font FONT = new Font("Monospaced", Font.BOLD, 12);
 
     /* Initialize the player and ghosts */
     Player player = new Player(200, 300);
@@ -63,14 +64,10 @@ public class Board extends JPanel {
     boolean demo = false;
     int gameFrame;
 
-    /* Used to call sound effects */
     Sounds sounds;
 
     private int lastPelletEatenX = 0;
     private int lastPelletEatenY = 0;
-
-    /* This is the font used for the menus */
-    private Font font = new Font("Monospaced", Font.BOLD, 12);
 
     /* Constructor initializes state flags etc.*/
     public Board() {
@@ -138,7 +135,7 @@ Also draws the menu */
         }
         /* Draw the menu items */
         g.setColor(Color.YELLOW);
-        g.setFont(font);
+        g.setFont(FONT);
         g.drawString("Reset", 100, max + 5 + gridSize);
         g.drawString("Clear High Scores", 180, max + 5 + gridSize);
         g.drawString("Exit", 350, max + 5 + gridSize);
@@ -239,7 +236,7 @@ and ghosts know that they can't traverse this area */
             sounds.nomNomStop();
 
             /* Draw the pacman */
-            g.drawImage(pacmanImage, player.x, player.y, Color.BLACK, null);
+            g.drawImage(PACMAN_IMAGE, player.x, player.y, Color.BLACK, null);
             g.setColor(Color.BLACK);
 
             /* Kill the pacman */
@@ -288,7 +285,7 @@ for the final frame to allow for the sound effect to end */
         if (titleScreen) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 600, 600);
-            g.drawImage(titleScreenImage, 0, 0, Color.BLACK, null);
+            g.drawImage(TITLE_SCREEN_IMAGE, 0, 0, Color.BLACK, null);
 
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
@@ -300,7 +297,7 @@ for the final frame to allow for the sound effect to end */
         else if (winScreen) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 600, 600);
-            g.drawImage(winScreenImage, 0, 0, Color.BLACK, null);
+            g.drawImage(WIN_SCREEN_IMAGE, 0, 0, Color.BLACK, null);
             gameFrame = 1;
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
@@ -311,7 +308,7 @@ for the final frame to allow for the sound effect to end */
         else if (overScreen) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 600, 600);
-            g.drawImage(gameOverImage, 0, 0, Color.BLACK, null);
+            g.drawImage(GAME_OVER_IMAGE, 0, 0, Color.BLACK, null);
             gameFrame = 1;
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
@@ -323,7 +320,7 @@ for the final frame to allow for the sound effect to end */
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 600, 18);
             g.setColor(Color.YELLOW);
-            g.setFont(font);
+            g.setFont(FONT);
             clearHighScores = false;
             if (demo)
                 g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
@@ -351,7 +348,7 @@ for the final frame to allow for the sound effect to end */
 
             /* Draw the top menu bar*/
             g.setColor(Color.YELLOW);
-            g.setFont(font);
+            g.setFont(FONT);
             if (demo)
                 g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
             else
@@ -452,7 +449,7 @@ for the final frame to allow for the sound effect to end */
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 600, 20);
             g.setColor(Color.YELLOW);
-            g.setFont(font);
+            g.setFont(FONT);
             if (demo)
                 g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
             else
@@ -494,17 +491,17 @@ for the final frame to allow for the sound effect to end */
         /*Draw the ghosts */
         if (ghost1.frameCount < 5) {
             /* Draw first frame of ghosts */
-            g.drawImage(ghost10, ghost1.x, ghost1.y, Color.BLACK, null);
-            g.drawImage(ghost20, ghost2.x, ghost2.y, Color.BLACK, null);
-            g.drawImage(ghost30, ghost3.x, ghost3.y, Color.BLACK, null);
-            g.drawImage(ghost40, ghost4.x, ghost4.y, Color.BLACK, null);
+            g.drawImage(GHOST_10_IMAGE, ghost1.x, ghost1.y, Color.BLACK, null);
+            g.drawImage(GHOST_20_IMAGE, ghost2.x, ghost2.y, Color.BLACK, null);
+            g.drawImage(GHOST_30_IMAGE, ghost3.x, ghost3.y, Color.BLACK, null);
+            g.drawImage(GHOST_40_IMAGE, ghost4.x, ghost4.y, Color.BLACK, null);
             ghost1.frameCount++;
         } else {
             /* Draw second frame of ghosts */
-            g.drawImage(ghost11, ghost1.x, ghost1.y, Color.BLACK, null);
-            g.drawImage(ghost21, ghost2.x, ghost2.y, Color.BLACK, null);
-            g.drawImage(ghost31, ghost3.x, ghost3.y, Color.BLACK, null);
-            g.drawImage(ghost41, ghost4.x, ghost4.y, Color.BLACK, null);
+            g.drawImage(GHOST_11_IMAGE, ghost1.x, ghost1.y, Color.BLACK, null);
+            g.drawImage(GHOST_21_IMAGE, ghost2.x, ghost2.y, Color.BLACK, null);
+            g.drawImage(GHOST_31_IMAGE, ghost3.x, ghost3.y, Color.BLACK, null);
+            g.drawImage(GHOST_41_IMAGE, ghost4.x, ghost4.y, Color.BLACK, null);
             if (ghost1.frameCount >= 10)
                 ghost1.frameCount = 0;
             else
@@ -514,7 +511,7 @@ for the final frame to allow for the sound effect to end */
         /* Draw the pacman */
         if (player.frameCount < 5) {
             /* Draw mouth closed */
-            g.drawImage(pacmanImage, player.x, player.y, Color.BLACK, null);
+            g.drawImage(PACMAN_IMAGE, player.x, player.y, Color.BLACK, null);
         } else {
             /* Draw mouth open in appropriate direction */
             if (player.frameCount >= 10)
@@ -522,16 +519,16 @@ for the final frame to allow for the sound effect to end */
 
             switch (player.currDirection) {
                 case 'L':
-                    g.drawImage(pacmanLeftImage, player.x, player.y, Color.BLACK, null);
+                    g.drawImage(PACMAN_LEFT_IMAGE, player.x, player.y, Color.BLACK, null);
                     break;
                 case 'R':
-                    g.drawImage(pacmanRightImage, player.x, player.y, Color.BLACK, null);
+                    g.drawImage(PACMAN_RIGHT_IMAGE, player.x, player.y, Color.BLACK, null);
                     break;
                 case 'U':
-                    g.drawImage(pacmanUpImage, player.x, player.y, Color.BLACK, null);
+                    g.drawImage(PACMAN_UP_IMAGE, player.x, player.y, Color.BLACK, null);
                     break;
                 case 'D':
-                    g.drawImage(pacmanDownImage, player.x, player.y, Color.BLACK, null);
+                    g.drawImage(PACMAN_DOWN_IMAGE, player.x, player.y, Color.BLACK, null);
                     break;
             }
         }
