@@ -46,7 +46,7 @@ class Player extends Mover {
     }
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
-    public char newDirection() {
+    private char newDirection() {
         int random;
         char backwards = 'U';
         int lookX = x, lookY = y;
@@ -95,11 +95,8 @@ class Player extends Mover {
     }
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
-    public boolean isChoiceDest() {
-        if (x % gridSize == 0 && y % gridSize == 0) {
-            return true;
-        }
-        return false;
+    private boolean isChoiceDest() {
+        return x % gridSize == 0 && y % gridSize == 0;
     }
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */

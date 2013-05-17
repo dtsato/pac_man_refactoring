@@ -8,36 +8,32 @@ import java.awt.event.*;
    creates the gui and captures mouse and keyboard input, as well as controls the game states */
 public class Pacman implements MouseListener, KeyListener {
 
+    public static final int WINDOW_WIDTH = 420;
+    public static final int WINDOW_HEIGHT = 460;
+    public static final int TILE_SIZE = 20;
+
     /* These timers are used to kill title, game over, and victory screens after a set idle period (5 seconds)*/
     private long titleTimer = -1;
     private long timer = -1;
 
-    /* Create a new board */
     private Board board;
-
-    /* This timer is used to do request new frames be drawn*/
     private Timer frameTimer;
 
-    /* This constructor creates the entire game essentially */
     public Pacman() {
         board = new Board();
     }
 
 	private void initialize() {
-		/* Create and set up window frame*/
-        JFrame f = new JFrame();
-        f.setSize(420, 460);
+        JFrame container = new JFrame();
+        container.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        /* Add the board to the frame */
-        f.add(board, BorderLayout.CENTER);
+        container.add(board, BorderLayout.CENTER);
 
-        /*Set listeners for mouse actions and button clicks*/
         board.addMouseListener(this);
         board.addKeyListener(this);
 
-        /* Make frame visible, disable resizing */
-        f.setVisible(true);
-        f.setResizable(false);
+        container.setVisible(true);
+        container.setResizable(false);
 
         /* Set the gameFrame flag to 1 because this is a new game */
         board.gameFrame = 1;
@@ -48,16 +44,16 @@ public class Pacman implements MouseListener, KeyListener {
     */
     public void repaint() {
         if (board.player.teleport) {
-            board.repaint(board.player.lastX - 20, board.player.lastY - 20, 80, 80);
+            board.repaint(board.player.lastX - TILE_SIZE, board.player.lastY - TILE_SIZE, 80, 80);
             board.player.teleport = false;
         }
-        board.repaint(0, 0, 600, 20);
-        board.repaint(0, 420, 600, 40);
-        board.repaint(board.player.x - 20, board.player.y - 20, 80, 80);
-        board.repaint(board.ghost1.x - 20, board.ghost1.y - 20, 80, 80);
-        board.repaint(board.ghost2.x - 20, board.ghost2.y - 20, 80, 80);
-        board.repaint(board.ghost3.x - 20, board.ghost3.y - 20, 80, 80);
-        board.repaint(board.ghost4.x - 20, board.ghost4.y - 20, 80, 80);
+        board.repaint(0, 0, WINDOW_WIDTH, 20);
+        board.repaint(0, 420, WINDOW_WIDTH, 40);
+        board.repaint(board.player.x - TILE_SIZE, board.player.y - TILE_SIZE, 80, 80);
+        board.repaint(board.ghost1.x - TILE_SIZE, board.ghost1.y - TILE_SIZE, 80, 80);
+        board.repaint(board.ghost2.x - TILE_SIZE, board.ghost2.y - TILE_SIZE, 80, 80);
+        board.repaint(board.ghost3.x - TILE_SIZE, board.ghost3.y - TILE_SIZE, 80, 80);
+        board.repaint(board.ghost4.x - TILE_SIZE, board.ghost4.y - TILE_SIZE, 80, 80);
     }
 
     /* Steps the screen forward one frame */
@@ -163,7 +159,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
             board.ghost4.y = 180;
 
             /* Advance a frame to display main state*/
-            board.repaint(0, 0, 600, 600);
+            board.repaint(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
             /*Start advancing frames once again*/
             board.stopped = false;
