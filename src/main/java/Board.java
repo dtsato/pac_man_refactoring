@@ -114,19 +114,17 @@ public class Board extends JPanel {
         clearHighScores = true;
     }
 
-    /* Wipes the high scores file and sets flag to update it on screen */
     public void clearHighScores() {
         updateScore(0);
     }
 
-    /* Reset occurs on a new game*/
-    public void reset() {
+    private void reset() {
         numLives = 2;
         currScore = 0;
         map = new GameMap();
     }
 
-    public void resetEntities() {
+    private void resetEntities() {
         player = new Player(200, 300, map);
         ghost1 = new Ghost(180, 180, map);
         ghost2 = new Ghost(200, 180, map);
@@ -134,21 +132,15 @@ public class Board extends JPanel {
         ghost4 = new Ghost(220, 180, map);
     }
 
-    /* Draws the appropriate number of lives on the bottom left of the screen.
-Also draws the menu */
-    public void drawLives(Graphics g) {
+    private void drawLives(Graphics g) {
         g.setColor(Color.BLACK);
-
-        /*Clear the bottom bar*/
         g.fillRect(0, Pacman.MAX + 5, Pacman.WINDOW_WIDTH, Pacman.TILE_SIZE);
-        g.setColor(Color.YELLOW);
-        for (int i = 0; i < numLives; i++) {
-            /*Draw each life */
-            g.fillOval(Pacman.TILE_SIZE * (i + 1), Pacman.MAX + 5, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
-        }
-        /* Draw the menu items */
+
         g.setColor(Color.YELLOW);
         g.setFont(FONT);
+        for (int i = 0; i < numLives; i++) {
+            g.fillOval(Pacman.TILE_SIZE * (i + 1), Pacman.MAX + 5, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+        }
         g.drawString("Reset", 100, Pacman.MAX + 5 + Pacman.TILE_SIZE);
         g.drawString("Clear High Scores", 180, Pacman.MAX + 5 + Pacman.TILE_SIZE);
         g.drawString("Exit", 350, Pacman.MAX + 5 + Pacman.TILE_SIZE);
@@ -158,13 +150,24 @@ Also draws the menu */
     /*  This function draws the board.  The pacman board is really complicated and can only feasibly be done
 manually.  Whenever I draw a wall, I call fillWall to invalidate those coordinates.  This way the pacman
 and ghosts know that they can't traverse this area */
-    public void drawBoard(Graphics g) {
+    private void drawBoard(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, Pacman.WINDOW_WIDTH, Pacman.WINDOW_HEIGHT);
 
         drawBorder(g);
         drawWalls(g);
         drawLives(g);
+    }
+
+    private void drawScore(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, Pacman.WINDOW_WIDTH, 20);
+        g.setColor(Color.YELLOW);
+        g.setFont(FONT);
+        if (demo)
+            g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
+        else
+            g.drawString("Score: " + currScore + "\t High Score: " + highScore, 20, 10);
     }
 
     private void drawBorder(Graphics g) {
@@ -182,8 +185,7 @@ and ghosts know that they can't traverse this area */
         }
     }
 
-    /* Draws the pellets on the screen */
-    public void drawPellets(Graphics g) {
+    private void drawPellets(Graphics g) {
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
                 if (map.hasPellet(i, j))
@@ -192,8 +194,7 @@ and ghosts know that they can't traverse this area */
         }
     }
 
-    /* Draws one individual pellet.  Used to redraw pellets that ghosts have run over */
-    public void fillPellet(int x, int y, Graphics g) {
+    private void fillPellet(int x, int y, Graphics g) {
         g.setColor(Color.YELLOW);
         g.fillOval((x+1) * Pacman.TILE_SIZE + 8, (y+1) * Pacman.TILE_SIZE + 8, 4, 4);
     }
@@ -225,15 +226,8 @@ and ghosts know that they can't traverse this area */
 
         /* If need to update the high scores, redraw the top menu bar */
         if (clearHighScores) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, Pacman.WINDOW_WIDTH, 18);
-            g.setColor(Color.YELLOW);
-            g.setFont(FONT);
             clearHighScores = false;
-            if (demo)
-                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
-            else
-                g.drawString("Score: " + (currScore) + "\t High Score: " + highScore, 20, 10);
+            drawScore(g);
         }
 
         /* oops is set to true when pacman has lost a life */
@@ -249,13 +243,7 @@ and ghosts know that they can't traverse this area */
             /* TODO: Easter Egg! Don't let the player go in the ghost box*/
             // player.state[9][7] = false;
 
-            /* Draw the top menu bar*/
-            g.setColor(Color.YELLOW);
-            g.setFont(FONT);
-            if (demo)
-                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
-            else
-                g.drawString("Score: " + (currScore) + "\t High Score: " + highScore, 20, 10);
+            drawScore(g);
             gameFrame++;
         }
         /* Second frame of new game */
@@ -344,14 +332,7 @@ and ghosts know that they can't traverse this area */
             currScore += 50;
 
             /* Update the screen to reflect the new score */
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, Pacman.WINDOW_WIDTH, 20);
-            g.setColor(Color.YELLOW);
-            g.setFont(FONT);
-            if (demo)
-                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
-            else
-                g.drawString("Score: " + (currScore) + "\t High Score: " + highScore, 20, 10);
+            drawScore(g);
 
             /* If this was the last pellet */
             if (player.pelletsEaten == 173) {
