@@ -21,9 +21,10 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
     /* This constructor creates the entire game essentially */
     public Pacman() {
         board = new Board();
-        board.requestFocus();
+    }
 
-        /* Create and set up window frame*/
+	private void initialize() {
+		/* Create and set up window frame*/
         JFrame f = new JFrame();
         f.setSize(420, 460);
 
@@ -40,22 +41,7 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 
         /* Set the gameFrame flag to 1 because this is a new game */
         board.gameFrame = 1;
-
-        /* Manually call the first frameStep to initialize the game. */
-        stepFrame(true);
-
-        /* Create a timer that calls stepFrame every 30 milliseconds */
-        frameTimer = new javax.swing.Timer(30, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                stepFrame(false);
-            }
-        });
-
-        /* Start the timer */
-        frameTimer.start();
-
-        board.requestFocus();
-    }
+	}
 
     /* This repaint function repaints only the parts of the screen that may have changed.
        Namely the area around every player ghost and the menu bars
@@ -75,7 +61,7 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
     }
 
     /* Steps the screen forward one frame */
-    public void stepFrame(boolean New) {
+    public void stepFrame(boolean firstFrame) {
         /* If we aren't on a special screen than the timers can be set to -1 to disable them */
         if (!board.titleScreen && !board.winScreen && !board.overScreen) {
             timer = -1;
@@ -90,7 +76,7 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 
         /* gameFrame can either be specified by the gameFrame parameter in stepFrame function call or by the state
   of board.gameFrame.  Update gameFrame accordingly */
-        New = New || (board.gameFrame != 0);
+        firstFrame = firstFrame || (board.gameFrame != 0);
 
         /* If this is the title screen, make sure to only stay on the title screen for 5 seconds.
 If after 5 seconds the user hasn't started a game, start up demo mode */
@@ -129,7 +115,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
 
 
         /* If we have a normal game state, move all pieces and update pellet status */
-        if (!New) {
+        if (!firstFrame) {
             /* The pacman player has two functions, demoMove if we're in demo mode and move if we're in
    user playable mode.  Call the appropriate one here */
             if (board.demo) {
@@ -151,7 +137,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
         }
 
         /* We either have a new game or the user has died, either way we have to reset the board */
-        if (board.stopped || New) {
+        if (board.stopped || firstFrame) {
             /*Temporarily stop advancing frames */
             frameTimer.stop();
 
@@ -274,8 +260,23 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
     public void keyTyped(KeyEvent e) {
     }
 
-    /* Main function simply creates a new pacman instance*/
+    public void play() {
+        initialize();
+
+        stepFrame(true);
+
+        frameTimer = new javax.swing.Timer(30, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                stepFrame(false);
+            }
+        });
+        frameTimer.start();
+
+        board.requestFocus();
+    }
+
     public static void main(String[] args) throws Exception {
-        Pacman c = new Pacman();
+        Pacman game = new Pacman();
+        game.play();
     }
 }
