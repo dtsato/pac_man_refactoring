@@ -55,14 +55,16 @@ public class Board extends JPanel {
 
     /* State flags*/
     boolean stopped;
-    boolean titleScreenB;
-    private TitleScreen titleScreen;
+
+    boolean titleScreenB = true;
     boolean winScreenB = false;
-    private WinScreen winScreen;
     boolean overScreenB = false;
+    boolean demo = false;
+
+    private TitleScreen titleScreen;
+    private WinScreen winScreen;
     private OverScreen overScreen;
     private DyingScreen dyingScreen;
-    boolean demo = false;
     int gameFrame;
 
     Sounds sounds;
@@ -81,7 +83,6 @@ public class Board extends JPanel {
         currScore = 0;
         stopped = false;
         gameFrame = 0;
-        titleScreenB = true;
         titleScreen = new TitleScreen(sounds, this);
         winScreen = new WinScreen(sounds, this);
         overScreen = new OverScreen(sounds, this);
@@ -161,11 +162,14 @@ and ghosts know that they can't traverse this area */
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, Pacman.WINDOW_WIDTH, Pacman.WINDOW_HEIGHT);
 
-        g.setColor(Color.WHITE);
-        g.drawRect(19, 19, 382, 382);
-
+        drawBorder(g);
         drawWalls(g);
         drawLives(g);
+    }
+
+    private void drawBorder(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.drawRect(19, 19, 382, 382);
     }
 
     private void drawWalls(Graphics g) {
@@ -427,10 +431,7 @@ and ghosts know that they can't traverse this area */
             }
         }
 
-        /* Draw the border around the game in case it was overwritten by ghost movement or something */
-        g.setColor(Color.WHITE);
-        g.drawRect(19, 19, 382, 382);
-
+        drawBorder(g);
     }
 
     public void gameOver() {
