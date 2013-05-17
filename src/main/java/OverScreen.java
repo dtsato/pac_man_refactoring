@@ -15,7 +15,7 @@ public class OverScreen {
 		this.board = board;
 	}
 
-	public void paing(Graphics g) {
+	public void paint(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 600, 600);
 		g.drawImage(GAME_OVER_IMAGE, 0, 0, Color.BLACK, null);

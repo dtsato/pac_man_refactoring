@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
-    private static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
+    public static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
     private static final Image PACMAN_UP_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanup.jpg"));
     private static final Image PACMAN_DOWN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmandown.jpg"));
     private static final Image PACMAN_LEFT_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacmanleft.jpg"));
@@ -66,6 +66,7 @@ public class Board extends JPanel {
     private WinScreen winScreen;
     boolean overScreenB = false;
     private OverScreen overScreen;
+    private DyingScreen dyingScreen;
     boolean demo = false;
     int gameFrame;
 
@@ -91,6 +92,7 @@ public class Board extends JPanel {
         titleScreen = new TitleScreen(sounds, this);
         winScreen = new WinScreen(sounds, this);
         overScreen = new OverScreen(sounds, this);
+        dyingScreen = new DyingScreen(sounds, this);
     }
 
     /* Reads the high scores file and saves it */
@@ -237,55 +239,8 @@ and ghosts know that they can't traverse this area */
 
     /* This is the main function that draws one entire frame of the game */
     public void paint(Graphics g) {
-        /* If we're playing the dying animation, don't update the entire screen.
-     Just kill the pacman*/
         if (dying > 0) {
-            /* Stop any pacman eating sounds */
-            sounds.nomNomStop();
-
-            /* Draw the pacman */
-            g.drawImage(PACMAN_IMAGE, player.x, player.y, Color.BLACK, null);
-            g.setColor(Color.BLACK);
-
-            /* Kill the pacman */
-            if (dying == 4)
-                g.fillRect(player.x, player.y, 20, 7);
-            else if (dying == 3)
-                g.fillRect(player.x, player.y, 20, 14);
-            else if (dying == 2)
-                g.fillRect(player.x, player.y, 20, 20);
-            else if (dying == 1) {
-                g.fillRect(player.x, player.y, 20, 20);
-            }
-
-            /* Take .1 seconds on each frame of death, and then take 2 seconds
-for the final frame to allow for the sound effect to end */
-            long currTime = System.currentTimeMillis();
-            long temp;
-            if (dying != 1)
-                temp = 100;
-            else
-                temp = 2000;
-            /* If it's time to draw a new death frame... */
-            if (currTime - timer >= temp) {
-                dying--;
-                timer = currTime;
-                /* If this was the last death frame...*/
-                if (dying == 0) {
-                    if (numLives == -1) {
-                        /* Demo mode has infinite lives, just give it more lives*/
-                        if (demo)
-                            numLives = 2;
-                        else {
-                            /* Game over for player.  If relevant, update high score.  Set gameOver flag*/
-                            if (currScore > highScore) {
-                                updateScore(currScore);
-                            }
-                            overScreenB = true;
-                        }
-                    }
-                }
-            }
+        	dyingScreen.paint(g);
             return;
         }
 
@@ -303,7 +258,7 @@ for the final frame to allow for the sound effect to end */
 
         /* If this is the game over screen, draw the game over screen and return */
         else if (overScreenB) {
-        	overScreen.paing(g);
+        	overScreen.paint(g);
             return;
         }
 
@@ -397,19 +352,14 @@ for the final frame to allow for the sound effect to end */
 
         /* Kill the pacman */
         if (oops && !stopped) {
-            /* 4 frames of death*/
-            dying = 4;
-
-            /* Play death sound effect */
-            sounds.death();
-            /* Stop any pacman eating sounds */
-            sounds.nomNomStop();
+        	/* 4 frames of death*/
+        	dying = 4;
+        	dyingScreen.startDying();
 
             /*Decrement lives, update screen to reflect that.  And set appropriate flags and timers */
             numLives--;
             stopped = true;
             drawLives(g);
-            timer = System.currentTimeMillis();
         }
 
         /* Delete the players and ghosts */
@@ -530,4 +480,18 @@ for the final frame to allow for the sound effect to end */
         g.drawRect(19, 19, 382, 382);
 
     }
+
+	public void gameOver() {
+        if (numLives == -1) {
+            /* Demo mode has infinite lives, just give it more lives*/
+            if (demo)
+                numLives = 2;
+            else {
+            	if (currScore > highScore) {
+            		updateScore(currScore);
+            	}
+            	overScreenB = true;
+            }
+        }
+	}
 }
