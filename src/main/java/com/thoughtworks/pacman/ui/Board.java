@@ -276,14 +276,6 @@ and ghosts know that they can't traverse this area */
                 return;
         }
 
-        /* Drawing optimization */
-        g.copyArea(player.x - 20, player.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost1.x - 20, ghost1.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost2.x - 20, ghost2.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost3.x - 20, ghost3.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost4.x - 20, ghost4.y - 20, 80, 80, 0, 0);
-
-
         /* Detect collisions */
         if (player.x == ghost1.x && Math.abs(player.y - ghost1.y) < 10)
             oops = true;
@@ -332,9 +324,6 @@ and ghosts know that they can't traverse this area */
 
             /* Increment pellets eaten value to track for end game */
             player.eatPellet();
-
-            /* Delete the pellet*/
-            map.eatPellet(player.pelletX, player.pelletY);
 
             /* Increment the score */
             currScore += 50;

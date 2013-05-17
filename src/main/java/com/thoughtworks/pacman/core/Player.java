@@ -7,8 +7,7 @@ public class Player extends Entity {
     public char currDirection;
     public char desiredDirection;
 
-    /* Keeps track of pellets eaten to determine end of game */
-    int pelletsEaten;
+    private int pelletsEaten;
 
     /* Which pellet the pacman is on top of */
     public int pelletX, pelletY;
@@ -160,6 +159,7 @@ public class Player extends Entity {
 
     public void eatPellet() {
         pelletsEaten++;
+        map.eatPellet(pelletX, pelletY);
     }
 
     public int getPelletsEaten() {
