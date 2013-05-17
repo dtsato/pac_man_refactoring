@@ -52,18 +52,8 @@ public class Pacman implements MouseListener, KeyListener {
     /* This repaint function repaints only the parts of the screen that may have changed.
        Namely the area around every player ghost and the menu bars
     */
-    public void repaint() {
-        if (board.player.teleport) {
-            board.repaint(board.player.lastX - TILE_SIZE, board.player.lastY - TILE_SIZE, 4*TILE_SIZE, 4*TILE_SIZE);
-            board.player.teleport = false;
-        }
-        board.repaint(0, 0, WINDOW_WIDTH, 20);
-        board.repaint(0, 420, WINDOW_WIDTH, 40);
-        board.repaint(board.player.x - TILE_SIZE, board.player.y - TILE_SIZE, 4*TILE_SIZE, 4*TILE_SIZE);
-        board.repaint(board.ghost1.x - TILE_SIZE, board.ghost1.y - TILE_SIZE, 4*TILE_SIZE, 4*TILE_SIZE);
-        board.repaint(board.ghost2.x - TILE_SIZE, board.ghost2.y - TILE_SIZE, 4*TILE_SIZE, 4*TILE_SIZE);
-        board.repaint(board.ghost3.x - TILE_SIZE, board.ghost3.y - TILE_SIZE, 4*TILE_SIZE, 4*TILE_SIZE);
-        board.repaint(board.ghost4.x - TILE_SIZE, board.ghost4.y - TILE_SIZE, 4*TILE_SIZE, 4*TILE_SIZE);
+    private void repaint() {
+        board.repaint(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
     /* Steps the screen forward one frame */

@@ -8,14 +8,10 @@ public class GameMap {
 
     public GameMap() {
         pellets = new boolean[Pacman.GRID_SIZE][Pacman.GRID_SIZE];
-        for (int i = 0; i < Pacman.GRID_SIZE; i++) {
-            for (int j = 0; j < Pacman.GRID_SIZE; j++) {
-                pellets[i][j] = true;
-            }
-        }
         state = new boolean[Pacman.GRID_SIZE][Pacman.GRID_SIZE];
         for (int i = 0; i < Pacman.GRID_SIZE; i++) {
             for (int j = 0; j < Pacman.GRID_SIZE; j++) {
+                pellets[i][j] = true;
                 state[i][j] = true;
             }
         }
