@@ -6,13 +6,9 @@ class Mover {
     /* Framecount is used to count animation frames*/
     int frameCount = 0;
 
-    /* gridSize is the size of one square in the game.
-max is the height/width of the game.
-increment is the speed at which the object moves,
-1 increment per move() call */
-    protected int gridSize;
-    protected int max;
-    protected int increment;
+    protected final static int MAX = Pacman.TILE_SIZE * 20;
+    protected final static int INCREMENT = 4;
+
     protected final GameMap map;
 
     int x, y;
@@ -26,24 +22,21 @@ increment is the speed at which the object moves,
         this.map = map;
         this.lastX = x;
         this.lastY = y;
-        gridSize = 20;
-        increment = 4;
-        max = 400;
-        direction = 'L';
+        this.direction = 'L';
     }
 
     /* Determines if a set of coordinates is a valid destination.*/
     protected boolean isValidDest(int x, int y) {
         /* The first statements check that the x and y are inbounds.  The last statement checks the map to
   see if it's a valid location */
-        if ((((x) % 20 == 0) || ((y) % 20) == 0) && 20 <= x && x < 400 && 20 <= y && y < 400 && map.getState(x / 20 - 1, y / 20 - 1)) {
+        if ((((x) % Pacman.TILE_SIZE == 0) || ((y) % Pacman.TILE_SIZE) == 0) && Pacman.TILE_SIZE <= x && x < MAX && Pacman.TILE_SIZE <= y && y < MAX && map.getState(x / Pacman.TILE_SIZE - 1, y / Pacman.TILE_SIZE - 1)) {
             return true;
         }
         return false;
     }
 
     /* Chooses a new direction randomly for the ghost to move */
-    protected char newDirection() {
+    protected char randomDirection() {
         int random;
         char backwards = 'U';
         int lookX = x, lookY = y;
@@ -79,16 +72,16 @@ increment is the speed at which the object moves,
             random = (int) (Math.random() * 4) + 1;
             if (random == 1) {
                 newDirection = 'L';
-                lookX -= increment;
+                lookX -= INCREMENT;
             } else if (random == 2) {
                 newDirection = 'R';
-                lookX += gridSize;
+                lookX += Pacman.TILE_SIZE;
             } else if (random == 3) {
                 newDirection = 'U';
-                lookY -= increment;
+                lookY -= INCREMENT;
             } else if (random == 4) {
                 newDirection = 'D';
-                lookY += gridSize;
+                lookY += Pacman.TILE_SIZE;
             }
             if (newDirection != backwards) {
                 set.add(newDirection);
@@ -99,6 +92,6 @@ increment is the speed at which the object moves,
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
     protected boolean isChoiceDest() {
-        return x % gridSize == 0 && y % gridSize == 0;
+        return x % Pacman.TILE_SIZE == 0 && y % Pacman.TILE_SIZE == 0;
     }
 }

@@ -20,8 +20,8 @@ class Player extends Mover {
         super(x, y, map);
         teleport = false;
         pelletsEaten = 0;
-        pelletX = x / gridSize - 1;
-        pelletY = y / gridSize - 1;
+        pelletX = x / Pacman.TILE_SIZE - 1;
+        pelletY = y / Pacman.TILE_SIZE - 1;
         currDirection = 'L';
         desiredDirection = 'L';
     }
@@ -35,32 +35,32 @@ class Player extends Mover {
         lastX = x;
         lastY = y;
         if (isChoiceDest()) {
-            direction = newDirection();
+            direction = randomDirection();
         }
         switch (direction) {
             case 'L':
-                if (isValidDest(x - increment, y)) {
-                    x -= increment;
-                } else if (y == 9 * gridSize && x < 2 * gridSize) {
-                    x = max - gridSize;
+                if (isValidDest(x - INCREMENT, y)) {
+                    x -= INCREMENT;
+                } else if (y == 9 * Pacman.TILE_SIZE && x < 2 * Pacman.TILE_SIZE) {
+                    x = MAX - Pacman.TILE_SIZE;
                     teleport = true;
                 }
                 break;
             case 'R':
-                if (isValidDest(x + gridSize, y)) {
-                    x += increment;
-                } else if (y == 9 * gridSize && x > max - gridSize * 2) {
-                    x = gridSize;
+                if (isValidDest(x + Pacman.TILE_SIZE, y)) {
+                    x += INCREMENT;
+                } else if (y == 9 * Pacman.TILE_SIZE && x > MAX - Pacman.TILE_SIZE * 2) {
+                    x = Pacman.TILE_SIZE;
                     teleport = true;
                 }
                 break;
             case 'U':
-                if (isValidDest(x, y - increment))
-                    y -= increment;
+                if (isValidDest(x, y - INCREMENT))
+                    y -= INCREMENT;
                 break;
             case 'D':
-                if (isValidDest(x, y + gridSize))
-                    y += increment;
+                if (isValidDest(x, y + Pacman.TILE_SIZE))
+                    y += INCREMENT;
                 break;
         }
         currDirection = direction;
@@ -69,13 +69,12 @@ class Player extends Mover {
 
     /* The move function moves the pacman for one frame in non demo mode */
     public void move() {
-        int gridSize = 20;
         lastX = x;
         lastY = y;
 
         /* Try to turn in the direction input by the user */
         /*Can only turn if we're in center of a grid*/
-        if (x % 20 == 0 && y % 20 == 0 ||
+        if (isChoiceDest() ||
                 /* Or if we're reversing*/
                 (desiredDirection == 'L' && currDirection == 'R') ||
                 (desiredDirection == 'R' && currDirection == 'L') ||
@@ -84,20 +83,20 @@ class Player extends Mover {
                 ) {
             switch (desiredDirection) {
                 case 'L':
-                    if (isValidDest(x - increment, y))
-                        x -= increment;
+                    if (isValidDest(x - INCREMENT, y))
+                        x -= INCREMENT;
                     break;
                 case 'R':
-                    if (isValidDest(x + gridSize, y))
-                        x += increment;
+                    if (isValidDest(x + Pacman.TILE_SIZE, y))
+                        x += INCREMENT;
                     break;
                 case 'U':
-                    if (isValidDest(x, y - increment))
-                        y -= increment;
+                    if (isValidDest(x, y - INCREMENT))
+                        y -= INCREMENT;
                     break;
                 case 'D':
-                    if (isValidDest(x, y + gridSize))
-                        y += increment;
+                    if (isValidDest(x, y + Pacman.TILE_SIZE))
+                        y += INCREMENT;
                     break;
             }
         }
@@ -105,28 +104,28 @@ class Player extends Mover {
         if (lastX == x && lastY == y) {
             switch (currDirection) {
                 case 'L':
-                    if (isValidDest(x - increment, y))
-                        x -= increment;
-                    else if (y == 9 * gridSize && x < 2 * gridSize) {
-                        x = max - gridSize;
+                    if (isValidDest(x - INCREMENT, y))
+                        x -= INCREMENT;
+                    else if (y == 9 * Pacman.TILE_SIZE && x < 2 * Pacman.TILE_SIZE) {
+                        x = MAX - Pacman.TILE_SIZE;
                         teleport = true;
                     }
                     break;
                 case 'R':
-                    if (isValidDest(x + gridSize, y))
-                        x += increment;
-                    else if (y == 9 * gridSize && x > max - gridSize * 2) {
-                        x = gridSize;
+                    if (isValidDest(x + Pacman.TILE_SIZE, y))
+                        x += INCREMENT;
+                    else if (y == 9 * Pacman.TILE_SIZE && x > MAX - Pacman.TILE_SIZE * 2) {
+                        x = Pacman.TILE_SIZE;
                         teleport = true;
                     }
                     break;
                 case 'U':
-                    if (isValidDest(x, y - increment))
-                        y -= increment;
+                    if (isValidDest(x, y - INCREMENT))
+                        y -= INCREMENT;
                     break;
                 case 'D':
-                    if (isValidDest(x, y + gridSize))
-                        y += increment;
+                    if (isValidDest(x, y + Pacman.TILE_SIZE))
+                        y += INCREMENT;
                     break;
             }
         }
@@ -150,8 +149,8 @@ class Player extends Mover {
     /* Update what pellet the pacman is on top of */
     public void updatePellet() {
         if (isChoiceDest()) {
-            pelletX = x / gridSize - 1;
-            pelletY = y / gridSize - 1;
+            pelletX = x / Pacman.TILE_SIZE - 1;
+            pelletY = y / Pacman.TILE_SIZE - 1;
         }
     }
 }

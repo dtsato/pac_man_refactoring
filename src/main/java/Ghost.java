@@ -10,8 +10,8 @@ class Ghost extends Mover {
     /*Constructor places ghost and updates states*/
     public Ghost(int x, int y, GameMap map) {
         super(x, y, map);
-        pelletX = x / gridSize - 1;
-        pelletY = x / gridSize - 1;
+        pelletX = x / Pacman.TILE_SIZE - 1;
+        pelletY = x / Pacman.TILE_SIZE - 1;
         lastPelletX = pelletX;
         lastPelletY = pelletY;
     }
@@ -23,8 +23,8 @@ class Ghost extends Mover {
     /* update pellet status */
     public void updatePellet() {
         int tempX, tempY;
-        tempX = x / gridSize - 1;
-        tempY = y / gridSize - 1;
+        tempX = x / Pacman.TILE_SIZE - 1;
+        tempY = y / Pacman.TILE_SIZE - 1;
         if (tempX != pelletX || tempY != pelletY) {
             lastPelletX = pelletX;
             lastPelletY = pelletY;
@@ -41,26 +41,26 @@ class Ghost extends Mover {
 
         /* If we can make a decision, pick a new direction randomly */
         if (isChoiceDest()) {
-            direction = newDirection();
+            direction = randomDirection();
         }
 
         /* If that direction is valid, move that way */
         switch (direction) {
             case 'L':
-                if (isValidDest(x - increment, y))
-                    x -= increment;
+                if (isValidDest(x - INCREMENT, y))
+                    x -= INCREMENT;
                 break;
             case 'R':
-                if (isValidDest(x + gridSize, y))
-                    x += increment;
+                if (isValidDest(x + Pacman.TILE_SIZE, y))
+                    x += INCREMENT;
                 break;
             case 'U':
-                if (isValidDest(x, y - increment))
-                    y -= increment;
+                if (isValidDest(x, y - INCREMENT))
+                    y -= INCREMENT;
                 break;
             case 'D':
-                if (isValidDest(x, y + gridSize))
-                    y += increment;
+                if (isValidDest(x, y + Pacman.TILE_SIZE))
+                    y += INCREMENT;
                 break;
         }
     }
