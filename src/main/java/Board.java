@@ -54,10 +54,6 @@ public class Board extends JPanel {
 
     private GameMap map;
 
-    /* Game dimensions */
-    private int gridSize;
-    private int max;
-
     /* State flags*/
     boolean stopped;
     boolean titleScreenB;
@@ -85,8 +81,6 @@ public class Board extends JPanel {
         }
         currScore = 0;
         stopped = false;
-        max = 400;
-        gridSize = 20;
         gameFrame = 0;
         titleScreenB = true;
         titleScreen = new TitleScreen(sounds, this);
@@ -146,18 +140,18 @@ Also draws the menu */
         g.setColor(Color.BLACK);
 
         /*Clear the bottom bar*/
-        g.fillRect(0, max + 5, 600, gridSize);
+        g.fillRect(0, Pacman.MAX + 5, Pacman.WINDOW_WIDTH, Pacman.TILE_SIZE);
         g.setColor(Color.YELLOW);
         for (int i = 0; i < numLives; i++) {
             /*Draw each life */
-            g.fillOval(gridSize * (i + 1), max + 5, gridSize, gridSize);
+            g.fillOval(Pacman.TILE_SIZE * (i + 1), Pacman.MAX + 5, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
         }
         /* Draw the menu items */
         g.setColor(Color.YELLOW);
         g.setFont(FONT);
-        g.drawString("Reset", 100, max + 5 + gridSize);
-        g.drawString("Clear High Scores", 180, max + 5 + gridSize);
-        g.drawString("Exit", 350, max + 5 + gridSize);
+        g.drawString("Reset", 100, Pacman.MAX + 5 + Pacman.TILE_SIZE);
+        g.drawString("Clear High Scores", 180, Pacman.MAX + 5 + Pacman.TILE_SIZE);
+        g.drawString("Exit", 350, Pacman.MAX + 5 + Pacman.TILE_SIZE);
     }
 
 
@@ -166,16 +160,16 @@ manually.  Whenever I draw a wall, I call fillWall to invalidate those coordinat
 and ghosts know that they can't traverse this area */
     public void drawBoard(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 600, 600);
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 420, 420);
+        g.fillRect(0, 0, Pacman.WINDOW_WIDTH, Pacman.WINDOW_HEIGHT);
 
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 20, 600);
-        g.fillRect(0, 0, 600, 20);
         g.setColor(Color.WHITE);
         g.drawRect(19, 19, 382, 382);
 
+        drawWalls(g);
+        drawLives(g);
+    }
+
+    private void drawWalls(Graphics g) {
         g.setColor(Color.BLUE);
         g.fillRect(40, 40, 60, 20);
         g.fillRect(120, 40, 60, 20);
@@ -226,7 +220,6 @@ and ghosts know that they can't traverse this area */
         g.fillRect(240, 360, 140, 20);
         g.fillRect(280, 320, 20, 40);
         g.fillRect(120, 320, 20, 60);
-        drawLives(g);
     }
 
 
@@ -243,7 +236,7 @@ and ghosts know that they can't traverse this area */
     /* Draws one individual pellet.  Used to redraw pellets that ghosts have run over */
     public void fillPellet(int x, int y, Graphics g) {
         g.setColor(Color.YELLOW);
-        g.fillOval(x * 20 + 28, y * 20 + 28, 4, 4);
+        g.fillOval((x+1) * Pacman.TILE_SIZE + 8, (y+1) * Pacman.TILE_SIZE + 8, 4, 4);
     }
 
     /* This is the main function that draws one entire frame of the game */
@@ -274,7 +267,7 @@ and ghosts know that they can't traverse this area */
         /* If need to update the high scores, redraw the top menu bar */
         if (clearHighScores) {
             g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 18);
+            g.fillRect(0, 0, Pacman.WINDOW_WIDTH, 18);
             g.setColor(Color.YELLOW);
             g.setFont(FONT);
             clearHighScores = false;
@@ -368,11 +361,11 @@ and ghosts know that they can't traverse this area */
 
         /* Delete the players and ghosts */
         g.setColor(Color.BLACK);
-        g.fillRect(player.lastX, player.lastY, 20, 20);
-        g.fillRect(ghost1.lastX, ghost1.lastY, 20, 20);
-        g.fillRect(ghost2.lastX, ghost2.lastY, 20, 20);
-        g.fillRect(ghost3.lastX, ghost3.lastY, 20, 20);
-        g.fillRect(ghost4.lastX, ghost4.lastY, 20, 20);
+        g.fillRect(player.lastX, player.lastY, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+        g.fillRect(ghost1.lastX, ghost1.lastY, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+        g.fillRect(ghost2.lastX, ghost2.lastY, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+        g.fillRect(ghost3.lastX, ghost3.lastY, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+        g.fillRect(ghost4.lastX, ghost4.lastY, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
 
         /* Eat pellets */
         if (map.hasPellet(player.pelletX, player.pelletY) && gameFrame != 2 && gameFrame != 3) {
@@ -393,7 +386,7 @@ and ghosts know that they can't traverse this area */
 
             /* Update the screen to reflect the new score */
             g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 20);
+            g.fillRect(0, 0, Pacman.WINDOW_WIDTH, 20);
             g.setColor(Color.YELLOW);
             g.setFont(FONT);
             if (demo)

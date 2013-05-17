@@ -42,14 +42,14 @@ class Player extends Entity {
                 if (isValidDest(x - INCREMENT, y)) {
                     x -= INCREMENT;
                 } else if (y == 9 * Pacman.TILE_SIZE && x < 2 * Pacman.TILE_SIZE) {
-                    x = MAX - Pacman.TILE_SIZE;
+                    x = Pacman.MAX - Pacman.TILE_SIZE;
                     teleport = true;
                 }
                 break;
             case 'R':
                 if (isValidDest(x + Pacman.TILE_SIZE, y)) {
                     x += INCREMENT;
-                } else if (y == 9 * Pacman.TILE_SIZE && x > MAX - Pacman.TILE_SIZE * 2) {
+                } else if (y == 9 * Pacman.TILE_SIZE && x > Pacman.MAX - Pacman.TILE_SIZE * 2) {
                     x = Pacman.TILE_SIZE;
                     teleport = true;
                 }
@@ -107,14 +107,14 @@ class Player extends Entity {
                     if (isValidDest(x - INCREMENT, y))
                         x -= INCREMENT;
                     else if (y == 9 * Pacman.TILE_SIZE && x < 2 * Pacman.TILE_SIZE) {
-                        x = MAX - Pacman.TILE_SIZE;
+                        x = Pacman.MAX - Pacman.TILE_SIZE;
                         teleport = true;
                     }
                     break;
                 case 'R':
                     if (isValidDest(x + Pacman.TILE_SIZE, y))
                         x += INCREMENT;
-                    else if (y == 9 * Pacman.TILE_SIZE && x > MAX - Pacman.TILE_SIZE * 2) {
+                    else if (y == 9 * Pacman.TILE_SIZE && x > Pacman.MAX - Pacman.TILE_SIZE * 2) {
                         x = Pacman.TILE_SIZE;
                         teleport = true;
                     }

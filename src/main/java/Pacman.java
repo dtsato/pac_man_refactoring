@@ -19,6 +19,8 @@ public class Pacman implements MouseListener, KeyListener {
     public static final int WINDOW_WIDTH = 420;
     public static final int WINDOW_HEIGHT = 460;
     public static final int TILE_SIZE = 20;
+    public static final int GRID_SIZE = 20;
+    public static final int MAX = TILE_SIZE * GRID_SIZE;
 
     /* These timers are used to kill title, game over, and victory screens after a set idle period (5 seconds)*/
     private long titleTimer = -1;

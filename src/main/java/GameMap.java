@@ -3,15 +3,15 @@ public class GameMap {
     private final boolean[][] pellets;
 
     public GameMap() {
-        pellets = new boolean[20][20];
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
+        pellets = new boolean[Pacman.GRID_SIZE][Pacman.GRID_SIZE];
+        for (int i = 0; i < Pacman.GRID_SIZE; i++) {
+            for (int j = 0; j < Pacman.GRID_SIZE; j++) {
                 pellets[i][j] = true;
             }
         }
-        state = new boolean[20][20];
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
+        state = new boolean[Pacman.GRID_SIZE][Pacman.GRID_SIZE];
+        for (int i = 0; i < Pacman.GRID_SIZE; i++) {
+            for (int j = 0; j < Pacman.GRID_SIZE; j++) {
                 state[i][j] = true;
             }
         }
