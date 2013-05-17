@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import javax.swing.JPanel;
 
-
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
     public static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Pacman.class.getResource("img/pacman.jpg"));
@@ -171,57 +170,13 @@ and ghosts know that they can't traverse this area */
 
     private void drawWalls(Graphics g) {
         g.setColor(Color.BLUE);
-        g.fillRect(40, 40, 60, 20);
-        g.fillRect(120, 40, 60, 20);
-        g.fillRect(200, 20, 20, 40);
-        g.fillRect(240, 40, 60, 20);
-        g.fillRect(320, 40, 60, 20);
-        g.fillRect(40, 80, 60, 20);
-        g.fillRect(160, 80, 100, 20);
-        g.fillRect(200, 80, 20, 60);
-        g.fillRect(320, 80, 60, 20);
-
-        g.fillRect(20, 120, 80, 60);
-        g.fillRect(320, 120, 80, 60);
-        g.fillRect(20, 200, 80, 60);
-        g.fillRect(320, 200, 80, 60);
-
-        g.fillRect(160, 160, 40, 20);
-        g.fillRect(220, 160, 40, 20);
-        g.fillRect(160, 180, 20, 20);
-        g.fillRect(160, 200, 100, 20);
-        g.fillRect(240, 180, 20, 20);
-
-        g.fillRect(120, 120, 60, 20);
-        g.fillRect(120, 80, 20, 100);
-        g.fillRect(280, 80, 20, 100);
-        g.fillRect(240, 120, 60, 20);
-
-        g.fillRect(280, 200, 20, 60);
-        g.fillRect(120, 200, 20, 60);
-        g.fillRect(160, 240, 100, 20);
-        g.fillRect(200, 260, 20, 40);
-
-        g.fillRect(120, 280, 60, 20);
-        g.fillRect(240, 280, 60, 20);
-
-        g.fillRect(40, 280, 60, 20);
-        g.fillRect(80, 280, 20, 60);
-        g.fillRect(320, 280, 60, 20);
-        g.fillRect(320, 280, 20, 60);
-
-
-        g.fillRect(20, 320, 40, 20);
-        g.fillRect(360, 320, 40, 20);
-        g.fillRect(160, 320, 100, 20);
-        g.fillRect(200, 320, 20, 60);
-
-        g.fillRect(40, 360, 140, 20);
-        g.fillRect(240, 360, 140, 20);
-        g.fillRect(280, 320, 20, 40);
-        g.fillRect(120, 320, 20, 60);
+        for (int i = 0; i < Pacman.GRID_SIZE; i++) {
+            for (int j = 0; j < Pacman.GRID_SIZE; j++) {
+                if (map.hasWall(i, j))
+                    g.fillRect((i+1) * Pacman.TILE_SIZE, (j+1) * Pacman.TILE_SIZE, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+            }
+        }
     }
-
 
     /* Draws the pellets on the screen */
     public void drawPellets(Graphics g) {

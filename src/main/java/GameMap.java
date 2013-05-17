@@ -199,12 +199,12 @@ public class GameMap {
         pellets[x][y] = false;
     }
 
-    public boolean getState(int x, int y) {
-        return state[x][y];
-    }
-
     public boolean hasPellet(int x, int y) {
         return pellets[x][y];
+    }
+
+    public boolean hasWall(int x, int y) {
+        return !state[x][y];
     }
 
     public void eatPellet(int x, int y) {

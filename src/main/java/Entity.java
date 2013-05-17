@@ -28,7 +28,7 @@ class Entity {
     protected boolean isValidDest(int x, int y) {
         /* The first statements check that the x and y are inbounds.  The last statement checks the map to
   see if it's a valid location */
-        if (((x % Pacman.TILE_SIZE == 0) || (y % Pacman.TILE_SIZE == 0)) && Pacman.TILE_SIZE <= x && x < Pacman.MAX && Pacman.TILE_SIZE <= y && y < Pacman.MAX && map.getState(x / Pacman.TILE_SIZE - 1, y / Pacman.TILE_SIZE - 1)) {
+        if (((x % Pacman.TILE_SIZE == 0) || (y % Pacman.TILE_SIZE == 0)) && Pacman.TILE_SIZE <= x && x < Pacman.MAX && Pacman.TILE_SIZE <= y && y < Pacman.MAX && !map.hasWall(x / Pacman.TILE_SIZE - 1, y / Pacman.TILE_SIZE - 1)) {
             return true;
         }
         return false;
