@@ -1,8 +1,8 @@
 import java.util.HashSet;
 import java.util.Set;
 
-/* Both Player and Ghost inherit Mover.  Has generic functions relevant to both*/
-class Mover {
+/* Both Player and Ghost inherit Entity.  Has generic functions relevant to both*/
+class Entity {
     /* Framecount is used to count animation frames*/
     int frameCount = 0;
 
@@ -16,7 +16,7 @@ class Mover {
     protected char direction;
 
     /* Generic constructor */
-    public Mover(int x, int y, GameMap map) {
+    public Entity(int x, int y, GameMap map) {
         this.x = x;
         this.y = y;
         this.map = map;

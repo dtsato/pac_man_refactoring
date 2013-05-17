@@ -1,5 +1,5 @@
 /* This is the pacman object */
-class Player extends Mover {
+class Player extends Entity {
     char currDirection;
     char desiredDirection;
 

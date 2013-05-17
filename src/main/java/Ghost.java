@@ -1,5 +1,5 @@
 /* Ghost class controls the ghost. */
-class Ghost extends Mover {
+class Ghost extends Entity {
 
     /* The pellet the ghost is on top of */
     private int pelletX, pelletY;

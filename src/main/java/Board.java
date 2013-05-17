@@ -128,7 +128,16 @@ public class Board extends JPanel {
     /* Reset occurs on a new game*/
     public void reset() {
         numLives = 2;
+        currScore = 0;
         map = new GameMap();
+    }
+
+    public void resetEntities() {
+        player = new Player(200, 300, map);
+        ghost1 = new Ghost(180, 180, map);
+        ghost2 = new Ghost(200, 180, map);
+        ghost3 = new Ghost(220, 180, map);
+        ghost4 = new Ghost(220, 180, map);
     }
 
     /* Draws the appropriate number of lives on the bottom left of the screen.
@@ -281,12 +290,7 @@ and ghosts know that they can't traverse this area */
         /* Game initialization */
         if (gameFrame == 1) {
             reset();
-            player = new Player(200, 300, map);
-            ghost1 = new Ghost(180, 180, map);
-            ghost2 = new Ghost(200, 180, map);
-            ghost3 = new Ghost(220, 180, map);
-            ghost4 = new Ghost(220, 180, map);
-            currScore = 0;
+            resetEntities();
             drawBoard(g);
             drawPellets(g);
             drawLives(g);
@@ -481,7 +485,7 @@ and ghosts know that they can't traverse this area */
 
     }
 
-	public void gameOver() {
+    public void gameOver() {
         if (numLives == -1) {
             /* Demo mode has infinite lives, just give it more lives*/
             if (demo)
