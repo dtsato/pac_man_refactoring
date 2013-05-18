@@ -28,6 +28,10 @@ public class Entity {
         this.direction = 'L';
     }
 
+    public boolean collidesWith(Entity entity) {
+        return (this.x == entity.x && Math.abs(this.y - entity.y) < 10) || (this.y == entity.y && Math.abs(this.x - entity.x) < 10);
+    }
+
     /* Determines if a set of coordinates is a valid destination.*/
     protected boolean isValidDest(int x, int y) {
         /* The first statements check that the x and y are inbounds.  The last statement checks the map to

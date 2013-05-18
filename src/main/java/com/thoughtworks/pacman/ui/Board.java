@@ -184,18 +184,19 @@ and ghosts know that they can't traverse this area */
     }
 
     private void drawWalls(Graphics g) {
-        g.setColor(Color.BLUE);
         for (int i = 0; i < Pacman.GRID_SIZE; i++) {
             for (int j = 0; j < Pacman.GRID_SIZE; j++) {
-                if (map.hasWall(i, j))
+                if (map.hasWall(i, j)) {
+                    g.setColor(Color.BLUE);
                     g.fillRect((i + 1) * Pacman.TILE_SIZE, (j + 1) * Pacman.TILE_SIZE, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
+                }
             }
         }
     }
 
     private void drawPellets(Graphics g) {
-        for (int i = 0; i < 19; i++) {
-            for (int j = 0; j < 19; j++) {
+        for (int i = 0; i < Pacman.GRID_SIZE - 1; i++) {
+            for (int j = 0; j < Pacman.GRID_SIZE - 1; j++) {
                 if (map.hasPellet(i, j))
                     fillPellet(i, j, g);
             }
@@ -238,9 +239,6 @@ and ghosts know that they can't traverse this area */
             drawScore(g);
         }
 
-        /* oops is set to true when pacman has lost a life */
-        boolean oops = false;
-
         /* Game initialization */
         if (gameFrame == 1) {
             reset();
@@ -276,26 +274,8 @@ and ghosts know that they can't traverse this area */
                 return;
         }
 
-        /* Detect collisions */
-        if (player.x == ghost1.x && Math.abs(player.y - ghost1.y) < 10)
-            oops = true;
-        else if (player.x == ghost2.x && Math.abs(player.y - ghost2.y) < 10)
-            oops = true;
-        else if (player.x == ghost3.x && Math.abs(player.y - ghost3.y) < 10)
-            oops = true;
-        else if (player.x == ghost4.x && Math.abs(player.y - ghost4.y) < 10)
-            oops = true;
-        else if (player.y == ghost1.y && Math.abs(player.x - ghost1.x) < 10)
-            oops = true;
-        else if (player.y == ghost2.y && Math.abs(player.x - ghost2.x) < 10)
-            oops = true;
-        else if (player.y == ghost3.y && Math.abs(player.x - ghost3.x) < 10)
-            oops = true;
-        else if (player.y == ghost4.y && Math.abs(player.x - ghost4.x) < 10)
-            oops = true;
-
         /* Kill the pacman */
-        if (oops && !stopped) {
+        if (!stopped && (player.collidesWith(ghost1) || player.collidesWith(ghost2) || player.collidesWith(ghost3) || player.collidesWith(ghost4))) {
         	/* 4 frames of death*/
         	dying = 4;
         	dyingScreen.startDying();

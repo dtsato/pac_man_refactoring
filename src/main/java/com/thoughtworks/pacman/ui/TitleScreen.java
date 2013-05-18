@@ -8,7 +8,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 public class TitleScreen {
-	// TODO The following line is duplicated!
 	private static final Image TITLE_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("titleScreen.jpg"));
 
 	private Sounds sounds;
