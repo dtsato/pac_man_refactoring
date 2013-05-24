@@ -3,16 +3,20 @@ package com.thoughtworks.pacman.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.thoughtworks.pacman.core.GameMap;
 import com.thoughtworks.pacman.sound.Sounds;
 
 public class GameScreen {
 
 	private Sounds sounds;
 	private Board board;
+	private GameMap map;
+	private long timer;
 
-	public GameScreen(Sounds sounds, Board board) {
+	public GameScreen(Sounds sounds, Board board, GameMap map) {
 		this.sounds = sounds;
 		this.board = board;
+		this.map = map;
 	}
 
 	private void drawScore(Graphics g) {
@@ -34,7 +38,7 @@ public class GameScreen {
 	private void drawWalls(Graphics g) {
 	    for (int i = 0; i < Pacman.GRID_SIZE; i++) {
 	        for (int j = 0; j < Pacman.GRID_SIZE; j++) {
-	            if (board.map.hasWall(i, j)) {
+	            if (map.hasWall(i, j)) {
 	                g.setColor(Color.BLUE);
 	                g.fillRect((i + 1) * Pacman.TILE_SIZE, (j + 1) * Pacman.TILE_SIZE, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
 	            }
@@ -70,10 +74,10 @@ public class GameScreen {
 	    g.fillOval((x+1) * Pacman.TILE_SIZE + 8, (y+1) * Pacman.TILE_SIZE + 8, 4, 4);
 	}
 
-	private void drawPellets(Board board, Graphics g) {
+	private void drawPellets(Graphics g) {
 	    for (int i = 0; i < Pacman.GRID_SIZE - 1; i++) {
 	        for (int j = 0; j < Pacman.GRID_SIZE - 1; j++) {
-	            if (board.map.hasPellet(i, j))
+	            if (map.hasPellet(i, j))
 	                fillPellet(i, j, g);
 	        }
 	    }
@@ -91,7 +95,7 @@ public class GameScreen {
 	        board.reset();
 	        board.resetEntities();
 	        drawBoard(g);
-	        drawPellets(board, g);
+	        drawPellets(g);
 	        drawLives(g);
 	        /* TODO: Easter Egg! Don't let the player go in the ghost box*/
 	        // player.state[9][7] = false;
@@ -107,15 +111,15 @@ public class GameScreen {
 	    else if (board.gameFrame == 3) {
 	        board.gameFrame++;
 	        /* Play the newGame sound effect */
-	        board.sounds.newGame();
-	        board.timer = System.currentTimeMillis();
+	        sounds.newGame();
+	        timer = System.currentTimeMillis();
 	        return;
 	    }
 	    /* Fourth frame of new game */
 	    else if (board.gameFrame == 4) {
 	        /* Stay in this state until the sound effect is over */
 	        long currTime = System.currentTimeMillis();
-	        if (currTime - board.timer >= 5000) {
+	        if (currTime - timer >= 5000) {
 	            board.gameFrame = 0;
 	        } else
 	            return;
@@ -176,7 +180,7 @@ public class GameScreen {
 	    /* If we moved to a location without pellets, stop the sounds */
 	    else if ((board.player.pelletX != board.lastPelletEatenX || board.player.pelletY != board.lastPelletEatenY) || board.player.stopped) {
 	        /* Stop any pacman eating sounds */
-	        board.sounds.nomNomStop();
+	        sounds.nomNomStop();
 	    }
 	
 	

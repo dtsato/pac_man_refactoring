@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
-    public static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacman.jpg"));
+    static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacman.jpg"));
     static final Image PACMAN_UP_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmanup.jpg"));
     static final Image PACMAN_DOWN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmandown.jpg"));
     static final Image PACMAN_LEFT_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmanleft.jpg"));
@@ -42,9 +42,6 @@ public class Board extends JPanel {
     Ghost ghost2 = new Ghost(200, 180);
     Ghost ghost3 = new Ghost(220, 180);
     Ghost ghost4 = new Ghost(220, 180);
-
-    /* Timer is used for playing sound effects and animations */
-    long timer = System.currentTimeMillis();
 
     /* Dying is used to count frames in the dying animation.  If it's non-zero, pacman is in the process of dying */
     int dying = 0;
@@ -95,7 +92,7 @@ public class Board extends JPanel {
         winScreen = new WinScreen(sounds, this);
         overScreen = new OverScreen(sounds, this);
         dyingScreen = new DyingScreen(sounds, this);
-        gameScreen = new GameScreen(sounds, this);
+        gameScreen = new GameScreen(sounds, this, map);
     }
 
     /* Reads the high scores file and saves it */
