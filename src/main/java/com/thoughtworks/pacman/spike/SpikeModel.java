@@ -36,4 +36,20 @@ public class SpikeModel {
 		currentX += speed.x * secondsEllapsed;
 		currentY += speed.y * secondsEllapsed;
 	}
+
+	public void turnLeft() {
+		speed = new Point(-10, 0);
+	}
+
+	public void turnRight() {
+		speed = new Point(10, 0);
+	}
+
+	public void turnUp() {
+		speed = new Point(0, -10);
+	}
+
+	public void turnDown() {
+		speed = new Point(0, 10);
+	}
 }

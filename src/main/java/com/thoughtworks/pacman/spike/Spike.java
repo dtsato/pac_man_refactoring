@@ -41,6 +41,8 @@ public class Spike {
 				System.exit(0);
 			}
 		});
+		SpikeController controller = new SpikeController(model);
+		container.addKeyListener(controller);
 
 		board.createBufferStrategy(2);
 	}
