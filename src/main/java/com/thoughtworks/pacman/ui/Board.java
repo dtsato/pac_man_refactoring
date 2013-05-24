@@ -1,13 +1,6 @@
 /* Drew Schuster */
 package com.thoughtworks.pacman.ui;
 
-import com.thoughtworks.pacman.core.GameMap;
-import com.thoughtworks.pacman.core.Ghost;
-import com.thoughtworks.pacman.core.Player;
-import com.thoughtworks.pacman.sound.GameSounds;
-import com.thoughtworks.pacman.sound.NoSounds;
-import com.thoughtworks.pacman.sound.Sounds;
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -18,7 +11,15 @@ import java.util.Scanner;
 
 import javax.swing.JPanel;
 
+import com.thoughtworks.pacman.core.GameMap;
+import com.thoughtworks.pacman.core.Ghost;
+import com.thoughtworks.pacman.core.Player;
+import com.thoughtworks.pacman.sound.GameSounds;
+import com.thoughtworks.pacman.sound.NoSounds;
+import com.thoughtworks.pacman.sound.Sounds;
+
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
+@SuppressWarnings("serial")
 public class Board extends JPanel {
     static final Image PACMAN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacman.jpg"));
     static final Image PACMAN_UP_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("pacmanup.jpg"));
@@ -92,7 +93,7 @@ public class Board extends JPanel {
         winScreen = new WinScreen(sounds, this);
         overScreen = new OverScreen(sounds, this);
         dyingScreen = new DyingScreen(sounds, this);
-        gameScreen = new GameScreen(sounds, this, map);
+        gameScreen = new GameScreen(sounds, this);
     }
 
     /* Reads the high scores file and saves it */

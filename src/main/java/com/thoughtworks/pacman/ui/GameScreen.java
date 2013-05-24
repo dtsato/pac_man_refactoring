@@ -3,20 +3,19 @@ package com.thoughtworks.pacman.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.thoughtworks.pacman.core.GameMap;
 import com.thoughtworks.pacman.sound.Sounds;
 
 public class GameScreen {
 
 	private Sounds sounds;
 	private Board board;
-	private GameMap map;
+	private Game game;
 	private long timer;
 
-	public GameScreen(Sounds sounds, Board board, GameMap map) {
+	public GameScreen(Sounds sounds, Board board) {
 		this.sounds = sounds;
 		this.board = board;
-		this.map = map;
+		this.game = new Game(board);
 	}
 
 	private void drawScore(Graphics g) {
@@ -38,7 +37,7 @@ public class GameScreen {
 	private void drawWalls(Graphics g) {
 	    for (int i = 0; i < Pacman.GRID_SIZE; i++) {
 	        for (int j = 0; j < Pacman.GRID_SIZE; j++) {
-	            if (map.hasWall(i, j)) {
+	            if (board.map.hasWall(i, j)) {
 	                g.setColor(Color.BLUE);
 	                g.fillRect((i + 1) * Pacman.TILE_SIZE, (j + 1) * Pacman.TILE_SIZE, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
 	            }
@@ -77,7 +76,7 @@ public class GameScreen {
 	private void drawPellets(Graphics g) {
 	    for (int i = 0; i < Pacman.GRID_SIZE - 1; i++) {
 	        for (int j = 0; j < Pacman.GRID_SIZE - 1; j++) {
-	            if (map.hasPellet(i, j))
+	            if (board.map.hasPellet(i, j))
 	                fillPellet(i, j, g);
 	        }
 	    }
@@ -126,14 +125,8 @@ public class GameScreen {
 	    }
 	
 	    /* Kill the pacman */
-	    if (!board.stopped && (board.player.collidesWith(board.ghost1) || board.player.collidesWith(board.ghost2) || board.player.collidesWith(board.ghost3) || board.player.collidesWith(board.ghost4))) {
-	    	/* 4 frames of death*/
-	    	board.dying = 4;
-	    	board.dyingScreen.startDying();
-	
-	        /*Decrement lives, update screen to reflect that.  And set appropriate flags and timers */
-	        board.numLives--;
-	        board.stopped = true;
+	    if (game.pacmanDied()) {
+	    	game.killPacman();
 	        drawLives(g);
 	    }
 	
@@ -146,7 +139,7 @@ public class GameScreen {
 	    g.fillRect(board.ghost4.lastX, board.ghost4.lastY, Pacman.TILE_SIZE, Pacman.TILE_SIZE);
 	
 	    /* Eat pellets */
-	    if (board.map.hasPellet(board.player.pelletX, board.player.pelletY) && board.gameFrame != 2 && board.gameFrame != 3) {
+	    if (board.map.hasPellet(board.player.pelletX, board.player.pelletY)) {
 	        board.lastPelletEatenX = board.player.pelletX;
 	        board.lastPelletEatenY = board.player.pelletY;
 	
