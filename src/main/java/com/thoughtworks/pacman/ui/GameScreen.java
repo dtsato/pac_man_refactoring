@@ -85,6 +85,8 @@ public class GameScreen {
         drawLives(g);
         drawPellets(g);
         drawScore(g);
+        drawGhosts(g);
+        drawPlayer(g);
         drawBorder(g);
 
         if (board.gameFrame != 0) {
@@ -110,9 +112,6 @@ public class GameScreen {
             /* Increment the score */
             board.currScore += 50;
 
-            /* Update the screen to reflect the new score */
-            drawScore(g);
-
             /* If this was the last pellet */
             if (board.player.getPelletsEaten() == 173) {
                 /* Demo mode can't get a high score */
@@ -135,7 +134,9 @@ public class GameScreen {
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
         }
+    }
 
+    private void drawGhosts(Graphics g) {
         /* Draw the ghosts */
         if (board.ghost1.frameCount < 5) {
             /* Draw first frame of ghosts */
@@ -156,7 +157,9 @@ public class GameScreen {
             else
                 board.ghost1.frameCount++;
         }
+    }
 
+    private void drawPlayer(Graphics g) {
         /* Draw the pacman */
         if (board.player.frameCount < 5) {
             /* Draw mouth closed */
@@ -182,8 +185,6 @@ public class GameScreen {
                 break;
             }
         }
-
-        drawBorder(g);
     }
 
     private void handleGameStartFrames() {
