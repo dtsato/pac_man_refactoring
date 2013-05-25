@@ -182,6 +182,9 @@ public class GameMap {
         fillWall(5, 16);
         fillWall(5, 17);
 
+        /* TODO: Easter Egg! Don't let the player go in the ghost box*/
+        // player.state[9][7] = false;
+
         /* Handle the weird spots with no pellets*/
         for (int i = 5; i < 14; i++) {
             for (int j = 5; j < 12; j++) {

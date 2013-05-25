@@ -83,28 +83,16 @@ public class GameScreen {
 	}
 
 	public void paint(Graphics g) {		
-		/* If need to update the high scores, redraw the top menu bar */
-		if (board.clearHighScores) {
-			board.clearHighScores = false;
-			drawScore(g);
-		}
+		drawBoard(g);
+	    drawPellets(g);
+	    drawScore(g);
 	
-		/* Game initialization */
 	    if (board.gameFrame == 1) {
-	        drawBoard(g);
-	        drawPellets(g);
-	        drawLives(g);
-	        /* TODO: Easter Egg! Don't let the player go in the ghost box*/
-	        // player.state[9][7] = false;
-	
-	        drawScore(g);
 	        board.gameFrame++;
 	    }
-	    /* Second frame of new game */
 	    else if (board.gameFrame == 2) {
 	        board.gameFrame++;
 	    }
-	    /* Third frame of new game */
 	    else if (board.gameFrame == 3) {
 	        board.gameFrame++;
 	        /* Play the newGame sound effect */
