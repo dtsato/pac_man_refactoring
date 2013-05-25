@@ -94,31 +94,13 @@ public class GameScreen {
 		drawScore(g);
 		drawBorder(g);
 
-		if (board.gameFrame == 1) {
-			board.gameFrame++;
-		} else if (board.gameFrame == 2) {
-			board.gameFrame++;
-		} else if (board.gameFrame == 3) {
-			board.gameFrame++;
-			/* Play the newGame sound effect */
-			sounds.newGame();
-			timer = System.currentTimeMillis();
+		if (board.gameFrame != 0) {
+			handleGameStartFrames();
 			return;
 		}
-		/* Fourth frame of new game */
-		else if (board.gameFrame == 4) {
-			/* Stay in this state until the sound effect is over */
-			long currTime = System.currentTimeMillis();
-			if (currTime - timer >= 5000) {
-				board.gameFrame = 0;
-			} else
-				return;
-		}
 
-		/* Kill the pacman */
 		if (game.pacmanDied()) {
 			game.killPacman();
-			drawLives(g);
 		}
 
 		/* Eat pellets */
@@ -160,42 +142,20 @@ public class GameScreen {
 			sounds.nomNomStop();
 		}
 
-		/* Replace pellets that have been run over by ghosts */
-		if (board.map.hasPellet(board.ghost1.lastPelletX,
-				board.ghost1.lastPelletY))
-			fillPellet(board.ghost1.lastPelletX, board.ghost1.lastPelletY, g);
-		if (board.map.hasPellet(board.ghost2.lastPelletX,
-				board.ghost2.lastPelletY))
-			fillPellet(board.ghost2.lastPelletX, board.ghost2.lastPelletY, g);
-		if (board.map.hasPellet(board.ghost3.lastPelletX,
-				board.ghost3.lastPelletY))
-			fillPellet(board.ghost3.lastPelletX, board.ghost3.lastPelletY, g);
-		if (board.map.hasPellet(board.ghost4.lastPelletX,
-				board.ghost4.lastPelletY))
-			fillPellet(board.ghost4.lastPelletX, board.ghost4.lastPelletY, g);
-
 		/* Draw the ghosts */
 		if (board.ghost1.frameCount < 5) {
 			/* Draw first frame of ghosts */
-			g.drawImage(Board.GHOST_10_IMAGE, board.ghost1.x, board.ghost1.y,
-					Color.BLACK, null);
-			g.drawImage(Board.GHOST_20_IMAGE, board.ghost2.x, board.ghost2.y,
-					Color.BLACK, null);
-			g.drawImage(Board.GHOST_30_IMAGE, board.ghost3.x, board.ghost3.y,
-					Color.BLACK, null);
-			g.drawImage(Board.GHOST_40_IMAGE, board.ghost4.x, board.ghost4.y,
-					Color.BLACK, null);
+			g.drawImage(Board.GHOST_10_IMAGE, board.ghost1.x, board.ghost1.y, Color.BLACK, null);
+			g.drawImage(Board.GHOST_20_IMAGE, board.ghost2.x, board.ghost2.y, Color.BLACK, null);
+			g.drawImage(Board.GHOST_30_IMAGE, board.ghost3.x, board.ghost3.y, Color.BLACK, null);
+			g.drawImage(Board.GHOST_40_IMAGE, board.ghost4.x, board.ghost4.y, Color.BLACK, null);
 			board.ghost1.frameCount++;
 		} else {
 			/* Draw second frame of ghosts */
-			g.drawImage(Board.GHOST_11_IMAGE, board.ghost1.x, board.ghost1.y,
-					Color.BLACK, null);
-			g.drawImage(Board.GHOST_21_IMAGE, board.ghost2.x, board.ghost2.y,
-					Color.BLACK, null);
-			g.drawImage(Board.GHOST_31_IMAGE, board.ghost3.x, board.ghost3.y,
-					Color.BLACK, null);
-			g.drawImage(Board.GHOST_41_IMAGE, board.ghost4.x, board.ghost4.y,
-					Color.BLACK, null);
+			g.drawImage(Board.GHOST_11_IMAGE, board.ghost1.x, board.ghost1.y, Color.BLACK, null);
+			g.drawImage(Board.GHOST_21_IMAGE, board.ghost2.x, board.ghost2.y, Color.BLACK, null);
+			g.drawImage(Board.GHOST_31_IMAGE, board.ghost3.x, board.ghost3.y, Color.BLACK, null);
+			g.drawImage(Board.GHOST_41_IMAGE, board.ghost4.x, board.ghost4.y, Color.BLACK, null);
 			if (board.ghost1.frameCount >= 10)
 				board.ghost1.frameCount = 0;
 			else
@@ -205,8 +165,7 @@ public class GameScreen {
 		/* Draw the pacman */
 		if (board.player.frameCount < 5) {
 			/* Draw mouth closed */
-			g.drawImage(Board.PACMAN_IMAGE, board.player.x, board.player.y,
-					Color.BLACK, null);
+			g.drawImage(Board.PACMAN_IMAGE, board.player.x, board.player.y, Color.BLACK, null);
 		} else {
 			/* Draw mouth open in appropriate direction */
 			if (board.player.frameCount >= 10)
@@ -214,25 +173,42 @@ public class GameScreen {
 
 			switch (board.player.currDirection) {
 			case 'L':
-				g.drawImage(Board.PACMAN_LEFT_IMAGE, board.player.x,
-						board.player.y, Color.BLACK, null);
+				g.drawImage(Board.PACMAN_LEFT_IMAGE, board.player.x, board.player.y, Color.BLACK, null);
 				break;
 			case 'R':
-				g.drawImage(Board.PACMAN_RIGHT_IMAGE, board.player.x,
-						board.player.y, Color.BLACK, null);
+				g.drawImage(Board.PACMAN_RIGHT_IMAGE, board.player.x, board.player.y, Color.BLACK, null);
 				break;
 			case 'U':
-				g.drawImage(Board.PACMAN_UP_IMAGE, board.player.x,
-						board.player.y, Color.BLACK, null);
+				g.drawImage(Board.PACMAN_UP_IMAGE, board.player.x, board.player.y, Color.BLACK, null);
 				break;
 			case 'D':
-				g.drawImage(Board.PACMAN_DOWN_IMAGE, board.player.x,
-						board.player.y, Color.BLACK, null);
+				g.drawImage(Board.PACMAN_DOWN_IMAGE, board.player.x, board.player.y, Color.BLACK, null);
 				break;
 			}
 		}
 
 		drawBorder(g);
+	}
+
+	private void handleGameStartFrames() {
+		if (board.gameFrame == 1) {
+			board.gameFrame++;
+		} else if (board.gameFrame == 2) {
+			board.gameFrame++;
+		} else if (board.gameFrame == 3) {
+			board.gameFrame++;
+			/* Play the newGame sound effect */
+			sounds.newGame();
+			timer = System.currentTimeMillis();
+		}
+		/* Fourth frame of new game */
+		else if (board.gameFrame == 4) {
+			/* Stay in this state until the sound effect is over */
+			long currTime = System.currentTimeMillis();
+			if (currTime - timer >= 5000) {
+				board.gameFrame = 0;
+			}
+		}
 	}
 
 }
