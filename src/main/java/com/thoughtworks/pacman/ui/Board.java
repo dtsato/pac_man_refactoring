@@ -90,8 +90,8 @@ public class Board extends JPanel {
         stopped = false;
         gameFrame = 0;
         titleScreen = new TitleScreen(this);
-        winScreen = new WinScreen(this);
-        overScreen = new OverScreen(this);
+        winScreen = new WinScreen();
+        overScreen = new OverScreen();
         dyingScreen = new DyingScreen(sounds, this);
         gameScreen = new GameScreen(sounds, this);
     }
@@ -184,5 +184,7 @@ public class Board extends JPanel {
 	public void newGame() {
 		gameFrame = 1;
 		sounds.nomNomStop();
+        reset();
+        resetEntities();
 	}
 }

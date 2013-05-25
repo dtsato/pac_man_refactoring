@@ -91,8 +91,6 @@ public class GameScreen {
 	
 		/* Game initialization */
 	    if (board.gameFrame == 1) {
-	        board.reset();
-	        board.resetEntities();
 	        drawBoard(g);
 	        drawPellets(g);
 	        drawLives(g);
