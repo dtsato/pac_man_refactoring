@@ -1,6 +1,5 @@
 package com.thoughtworks.pacman.ui;
 
-import com.thoughtworks.pacman.sound.Sounds;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,11 +9,9 @@ import java.awt.Toolkit;
 public class WinScreen {
 	private static final Image WIN_SCREEN_IMAGE = Toolkit.getDefaultToolkit().getImage(Board.class.getResource("winScreen.jpg"));
 
-	private Sounds sounds;
 	private Board board;
 
-	public WinScreen(Sounds sounds, Board board) {
-		this.sounds = sounds;
+	public WinScreen(Board board) {
 		this.board = board;
 	}
 
@@ -22,8 +19,7 @@ public class WinScreen {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 600, 600);
 		g.drawImage(WIN_SCREEN_IMAGE, 0, 0, Color.BLACK, null);
-		board.gameFrame = 1;
-		sounds.nomNomStop();
+		board.newGame();
 	}
 
 }

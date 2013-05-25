@@ -89,9 +89,9 @@ public class Board extends JPanel {
         currScore = 0;
         stopped = false;
         gameFrame = 0;
-        titleScreen = new TitleScreen(sounds, this);
-        winScreen = new WinScreen(sounds, this);
-        overScreen = new OverScreen(sounds, this);
+        titleScreen = new TitleScreen(this);
+        winScreen = new WinScreen(this);
+        overScreen = new OverScreen(this);
         dyingScreen = new DyingScreen(sounds, this);
         gameScreen = new GameScreen(sounds, this);
     }
@@ -179,5 +179,10 @@ public class Board extends JPanel {
             	overScreenB = true;
             }
         }
+	}
+
+	public void newGame() {
+		gameFrame = 1;
+		sounds.nomNomStop();
 	}
 }

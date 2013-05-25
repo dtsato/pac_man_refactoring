@@ -45,8 +45,7 @@ public class Pacman implements MouseListener, KeyListener {
         container.setVisible(true);
         container.setResizable(false);
 
-        /* Set the gameFrame flag to 1 because this is a new game */
-        board.gameFrame = 1;
+        board.newGame();
 	}
 
     /* This repaint function repaints only the parts of the screen that may have changed.
@@ -188,9 +187,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
         /* Pressing a key during a demo kills the demo mode and starts a new game */
         else if (board.demo) {
             board.demo = false;
-            /* Stop any pacman eating sounds */
-            board.sounds.nomNomStop();
-            board.gameFrame = 1;
+            board.newGame();
             return;
         }
 
@@ -225,8 +222,7 @@ If after 5 seconds the user hasn't pressed a key, go to title screen */
         int y = e.getY();
         if (400 <= y && y <= 460) {
             if (100 <= x && x <= 150) {
-                /* New game has been clicked */
-                board.gameFrame = 1;
+                board.newGame();
             } else if (180 <= x && x <= 300) {
                 /* Clear high scores has been clicked */
                 board.clearHighScores();
