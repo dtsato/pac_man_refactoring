@@ -183,7 +183,6 @@ public class Board extends JPanel {
 
 	public void newGame() {
 		gameFrame = 1;
-		sounds.nomNomStop();
         reset();
         resetEntities();
 	}

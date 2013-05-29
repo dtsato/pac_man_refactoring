@@ -99,7 +99,7 @@ public class GameScreen {
         }
 
         /* Eat pellets */
-        if (board.map.hasPellet(board.player.pelletX, board.player.pelletY)) {
+        else if (board.map.hasPellet(board.player.pelletX, board.player.pelletY)) {
             board.lastPelletEatenX = board.player.pelletX;
             board.lastPelletEatenY = board.player.pelletY;
 
@@ -119,6 +119,7 @@ public class GameScreen {
                     if (board.currScore > board.highScore) {
                         board.updateScore(board.currScore);
                     }
+                    sounds.nomNomStop();
                     board.winScreenB = true;
                 }
                 else {
